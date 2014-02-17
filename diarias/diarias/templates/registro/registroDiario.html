@@ -1,0 +1,14 @@
+<!DOCTYPE>
+<html lang="es">
+<head>
+    <title>Registro Diario</title>
+    <meta charset="UTF-8"/>
+</head>
+	<body>
+		<h1>Registrar Ganancia</h1>
+		<form method="POST">{% csrf_token %}
+			{{ form.as_p }}
+			<button type="submit">Guardar</button>
+		</form>
+	</body>
+</html>
