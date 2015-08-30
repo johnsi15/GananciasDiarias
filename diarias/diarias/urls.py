@@ -12,5 +12,5 @@ urlpatterns = patterns('',
     #INICIO
     url(r'^', include('apps.inicio.urls')),#indicamos que vamos a usar la urls de inicio
     #REGISTROS
-    url(r'^', include('apps.registro.urls')),
+    url(r'^', include('apps.registros.urls')),
 )
