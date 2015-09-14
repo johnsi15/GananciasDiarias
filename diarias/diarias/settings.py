@@ -8,7 +8,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('John Andrey', 'jandreys15@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -125,7 +125,15 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'apps.inicio',
     'apps.registros',
+    'apps.menu',
+    'apps.usuarios',
 )
+
+from django.core.urlresolvers import reverse_lazy
+LOGIN_URL = reverse_lazy('login')
+LOGIN_REDIRECT_URL = reverse_lazy('menu')
+LOGOUT_URL = reverse_lazy('logout')
+
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

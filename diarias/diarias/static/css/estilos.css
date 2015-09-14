@@ -1,4 +1,60 @@
-body{
-	background-color: red;
+#inicio{
+  background: rgba(0, 0, 0, 1);
+  color: #fff;
 }
 
+#titulos{
+  padding-bottom: 3%;
+  text-align: center;
+  color: #000;
+}
+
+.main{
+  margin-top: 10%;
+}
+
+#login{
+  position: absolute;
+  z-index: 2;
+}
+
+#img-inicio{
+  /*background: url(../img/img.png);*/
+  opacity: 0.5;
+  width: 100%;
+  height: 69%;
+  position: absolute;
+  z-index: 1;
+}
+
+#img-menu{
+  width: 25%;
+  height: 40px;
+  margin-left: 60%;
+}
+
+#pieInicio{
+   color: white;
+   text-align: center;
+   padding-top: 3%;
+   padding-bottom: 5%;
+   width: 100%;
+   background: rgba(0, 0, 0, 0.9);
+   bottom:0!important;
+   margin-bottom: -5%;
+   position: absolute;
+   border-top: 2px solid #e5e5e5;
+}
+
+#pieMenu{
+    padding-top: 3%;
+    padding-bottom: 5%;
+    color: white;
+    text-align: center;
+    width: 100%;
+    border-top: 1px solid #e5e5e5;
+    background: rgba(83, 81, 70, 0.5);
+    bottom:0!important;
+    margin-bottom: -5%;
+    position: absolute;
+}

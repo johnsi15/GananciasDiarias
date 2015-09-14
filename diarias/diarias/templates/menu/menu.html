@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>Menu</title>
+
+	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/estilos.css"> 
+</head>
+ <style type="text/css">body { padding-top: 70px; }</style>
+<body>
+{% if user.is_authenticated %}
+	<header>
+		<nav class="navbar navbar-inverse navbar-fixed-top" id="cabezera-menu">
+		  <div class="container">
+		    <div class="navbar-header divider">
+		    	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-1" aria-expanded="false">
+			        <span class="sr-only">Menu</span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			    </button>
+		      <a class="navbar-brand" href="/menu">Ganancias y Gastos
+		      </a>
+		    </div>
+
+		    <div class="collapse navbar-collapse" id="navbar-1">
+		      <ul class="nav navbar-nav">
+		        <li class="active"><a href="#">Inicio <span class="sr-only">(current)</span></a></li>
+		        <li><a href="ingresos.html">Ingresos</a></li>
+		         <li><a href="gastos.html">Gastos</a></li>
+		         <li><a href="#">Mensualidad</a></li>
+		        <li class="dropdown">
+		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user.username|capfirst}} <span class="caret"></span></a>
+		          <ul class="dropdown-menu">
+		            <li><a href="#">Action</a></li>
+		            <li><a href="#">Another action</a></li>
+		            <li><a href="#">Something else here</a></li>
+		            <li class="divider"></li>
+		            <li><a href="/configuracion">Configuración</a></li>
+		            <li class="divider"></li>
+		            <li><a href="/cerrar">Cerrar Sesion</a></li>
+		          </ul>
+		        </li>
+		      </ul>
+		    </div><!-- /.navbar-collapse -->
+		  </div><!-- /.container -->
+		</nav>
+	</header>
+
+	<div class="container">
+		<section class="main row">
+			<article class="col-md-2"></article>
+			<article class="col-md-4">
+				<table class="table table-hover table-bordered">
+				   <tr class="success">
+					  <th><h2>Ganancias</h2></th>
+				   </tr>
+				   <tr>
+				   	<td>$500.000</td>
+				   </tr>
+				</table>
+			</article>
+			<article class="col-md-4">
+				<table class="table table-hover table-bordered">
+				   <tr class="danger">
+					  <th><h2>Gastos</h2></th>
+				   </tr>
+				   <tr>
+				   	<td>$100.000</td>
+				   </tr>
+				</table>
+			</article>
+		</section>
+	</div>
+	
+	<footer id="pieMenu">
+		<h2>@Jandrey15</h2>			
+	</footer>
+	
+	<!-- scripts -->	
+	<script type="text/javascript" src="{{STATIC_URL}}js/jquery.min.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap.min.js"></script>
+{% else %}
+	<script type="text/javascript">
+		 window.location="http://localhost:8000/";
+	</script>
+{% endif %}
+</body>
+</html>

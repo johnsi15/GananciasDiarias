@@ -1,0 +1,36 @@
+{% extends "usuarios/base.html" %}
+
+{% block titulo %}Nuevo Usuario{% endblock  %}
+
+{% block cabezera %}
+	<h2 id="titulos">Crear Nuevo Usuario</h2>
+{% endblock  %}
+
+{% block contenido %}
+	<form class="form-horizontal" id="formulario" method="post" action="">{% csrf_token %}
+		{{ form }}
+		<!-- <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-2 control-label">Nombre</label>
+		    <div class="col-sm-5">
+		    <input type="text" class="form-control" id="inputEmail3" placeholder="Nombre de Usuario">
+		    </div>
+		</div>
+		<div class="form-group">
+		    <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+		    <div class="col-sm-5">
+		     <input type="password" class="form-control" id="password" placeholder="Password">
+			</div>
+		</div>
+		<div class="form-group">
+		    <label for="inputPassword3" class="col-sm-2 control-label">Confirmar</label>
+		    <div class="col-sm-5">
+		     <input type="password" class="form-control" id="confPassword" placeholder="Confirmar Password">
+			</div>
+		</div><br> -->
+		<div class="form-group">
+		     <div class="col-sm-offset-2 col-sm-5">
+		      <button type="submit" class="btn btn-primary">Registrar</button>
+			 </div>
+		</div>
+	</form>
+{% endblock %}

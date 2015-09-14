@@ -13,4 +13,8 @@ urlpatterns = patterns('',
     url(r'^', include('apps.inicio.urls')),#indicamos que vamos a usar la urls de inicio
     #REGISTROS
     url(r'^', include('apps.registros.urls')),
+    #MENU
+    url(r'^', include('apps.menu.urls')),
+    #NUEVO_USUARIO
+    url(r'^', include('apps.usuarios.urls')),
 )
