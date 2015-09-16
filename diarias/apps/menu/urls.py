@@ -3,8 +3,5 @@ from .views import Menu
 
 urlpatterns = patterns('',
 	url(r'^menu/$', Menu.as_view(), name="menu"),
-
-	url(r'^cerrar/$', 'django.contrib.auth.views.logout_then_login',
-	    name='logout'),
 	#url(r'^$', 'apps.menu.views.menu'), asi se asi anteriormente
 )
