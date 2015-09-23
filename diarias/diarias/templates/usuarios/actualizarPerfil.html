@@ -7,39 +7,40 @@
 {% endblock  %}
 
 {% block contenido %}
+<style>
+	#id_usuario{display: none;}
+	label[for=id_usuario]{display: none;} 
+</style>
 	<hr></hr>
+	<article class="col-md-1"></article>
 	<article class="col-md-10">
-		<ul class="nav nav-tabs nav-justified ">
+		<ul class="nav nav-tabs nav-justified well">
   			<li role="presentation"> <a href="/perfil">Perfil</a></li>
-  			<li role="presentation" class="active"><a href="/actualizar-perfil">Editar Perfil</a>
+  			<li role="presentation" class="active"><a href="/actualizar-perfil/{{user.id}}">Editar Perfil</a>
 				<form class="form-horizontal" id="formulario" method="post" action="">{% csrf_token %}
-					<div class="form-group">
-				   		 <label class="col-sm-8 control-label"><h3>Nombre de Usuario</h3></label>
-				   		 <div class="col-sm-8">
-				    		<input type="text" class="form-control" value="{{user.username|capfirst}}">
-				    	</div>
-				    </div>
-				    <div class="form-group">
-				   		 <label class="col-sm-8 control-label"><h3>Correo electrónico</h3></label>
-				   		 <div class="col-sm-8">
-				    		<input type="email" class="form-control" value="{{user.email|capfirst}}">
-				    	</div>
-				    </div>
-				     <div class="form-group">
-				   		 <label class="col-sm-4 control-label"><h3>Nombre</h3></label>
-				   		 <div class="col-sm-9">
-				    		<input type="text" class="form-control" value="{{user.first_name|capfirst}}">
-				    	</div>
-				    </div>
-					<div class="col-sm-offset-1 col-sm-7">
-				      <button type="submit" class="btn btn-success">Actualizar</button>
-					</div>
+					{{formulario.as_p}}
+					<br>
+					<button type="submit" class="btn btn-success">Actualizar</button>
+					<a href="/perfil" class="btn btn-warning" type="submit">Cancelar</a>
 				</form>
   			</li>
   			<li role="presentation"><a href="/usuario-nuevo">Crear Usuario</a></li>
+  			<li role="presentation"><a href="/cambiar-clave">Cambiar Contraseña</a></li>
 		</ul>
 		<hr></hr>
 	</article>
+{% endblock %}
+
+{% block script %}
+	<script>
+		$(document).ready(function(){
+			console.log( "ready!" );
+			$('#id_nombre').addClass('form-control');
+			$('#id_apellido').addClass('form-control');
+			$('#id_telefono').addClass('form-control');
+			$('#id_usuario > option[value="{{user.id}}"]').attr('selected', 'selected');
+		});
+	</script>
 {% endblock %}
 
 {% block etiquetaPerfil %}

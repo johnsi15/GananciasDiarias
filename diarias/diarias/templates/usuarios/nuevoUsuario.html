@@ -7,59 +7,42 @@
 {% endblock  %}
 
 {% block contenido %}
-<hr></hr>
-<article class="col-md-10">
-	<ul class="nav nav-tabs nav-justified ">
-  		<li role="presentation"> <a href="/perfil">Perfil</a></li>
-  		<li role="presentation"><a href="/actualizar-perfil">Editar Perfil</a></li>
-  		<li role="presentation class="active""><a href="/usuario-nuevo">Crear Usuario</a>
-			<form class="form-horizontal" id="formulario" method="post" action="">{% csrf_token %}
-				<br>
-				<div class="form-group">
-				    <div class="col-sm-8">
-				    <input type="text" class="form-control" required name="username" id="id_username" placeholder="Nombre de Usuario">
-				    </div>
-				</div>
-				<div class="form-group">
-				    <div class="col-sm-8">
-				    <input type="text" class="form-control" name="first_name" id="id_first_name" placeholder="Nombre">
-				    </div>
-				</div>
-				<div class="form-group">
-				    <div class="col-sm-8">
-				    <input type="text" class="form-control" name="last_name" id="id_last_name" placeholder="Apellidos">
-				    </div>
-				</div>
-				<div class="form-group">
-				    <div class="col-sm-8">
-				    <input type="email" class="form-control" required name="email"  placeholder="Correo electrónico">
-				    </div>
-				</div>
-				<div class="form-group">
-				    <div class="col-sm-8">
-				     <input type="password" class="form-control" required name="password" id="id_password" placeholder="Password">
-					</div>
-				</div>
-				<div class="form-group">
-				    <div class="col-sm-8">
-				     <input type="password" class="form-control" name="password1" id="id_password1" placeholder="Confirmar Password">
-					</div>
-				</div>
-				<div class="form-group">
-				     <div class="col-sm-offset-2 col-sm-8">
-				      <button type="submit" class="btn btn-primary">Registrar</button>
-					 </div>
-				</div>
-			</form>
-			{% if form.errors %}
-       		 	<p>{{ form.errors }}</p>
-    		{% endif %}
-  		</li>
-	</ul>
+	<style>
+		.helptext{ display: none;}
+	</style>
 	<hr></hr>
-</article>
+	<article class="col-md-1"></article>
+	<article class="col-md-10">
+		<ul class="nav nav-tabs nav-justified well">
+	  		<li role="presentation"> <a href="/perfil">Perfil</a></li>
+	  		<li role="presentation"><a href="/actualizar-perfil/{{user.id}}">Editar Perfil</a></li>
+	  		<li role="presentation" class="active"><a href="/usuario-nuevo/{{user.id}}">Crear Usuario</a>
+				<form class="form-horizontal" id="formulario" method="post" action="">{% csrf_token %}
+					<br>
+					{{form.as_p}}
+					<button type="submit" class="btn btn-primary">Registrar</button>
+				</form>
+	  		</li>
+	  		<li role="presentation"><a href="/cambiar-clave">Cambiar Contraseña</a></li>
+		</ul>
+		<hr></hr>
+	</article>
 {% endblock %}
 
-{% block etiquetaCrearUser %}
+{% block etiquetaPerfil %}
 	class="active"
+{% endblock %}
+
+{% block script %}
+	<script>
+		$(document).ready(function(){
+			console.log( "ready!" );
+			$('#id_username').addClass('form-control');
+			$('#id_password1').addClass('form-control');
+			$('#id_password2').addClass('form-control');
+			$('#id_nombre').addClass('form-control');
+			$('#id_apellido').addClass('form-control');
+			$('#id_telefono').addClass('form-control');
+		});
+	</script>
 {% endblock %}

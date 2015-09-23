@@ -8,18 +8,22 @@
 
 {% block contenido %}
 	<hr></hr>
+	<article class="col-md-1"></article>
 	<article class="col-md-10">
-		<ul class="nav nav-tabs nav-justified">
+		<ul class="nav nav-tabs nav-justified well">
   			<li role="presentation" class="active"><a href="/perfil">Perfil</a>
 				<h3>Nombre de Usuario: </h3>
 				<p>{{user.username|capfirst}}</p>
-				<h3>Correo electrónico: </h3>
-				<p>{{user.email|capfirst}}</p>
 				<h3>Nombre: </h3>
-				<p>{{user.first_name|capfirst}}</p>
+				<p>{{user.perfiles.nombre|capfirst}}</p>
+				<h3>Apellido: </h3>
+				<p>{{user.perfiles.apellido|capfirst}}</p>
+				<h3>Telefono: </h3>
+				<p>{{user.perfiles.telefono}}</p>
   			</li>
-  			<li role="presentation"><a href="/actualizar-perfil">Editar Perfil</a></li>
+  			<li role="presentation"><a href="/actualizar-perfil/{{user.id}}">Editar Perfil</a></li>
   			<li role="presentation"><a href="/usuario-nuevo">Crear Usuario</a></li>
+  			<li role="presentation"><a href="/cambiar-clave">Cambiar Contraseña</a></li>
 		</ul>
 		<hr></hr>
 	</article>

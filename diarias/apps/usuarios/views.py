@@ -1,55 +1,29 @@
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView,FormView
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
-from django.contrib.auth.forms import UserCreationForm
 from django.template import RequestContext
-from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
-from .forms import RegistroUsuario
+from django.core.urlresolvers import reverse_lazy
+from .forms import UserForm,EditarPerfil,EditarContrasenaForm
+from .models import Perfiles
+from django.contrib.auth.hashers import make_password
+#from django.contrib.auth.models import User
 
-# def NuevoUsuario(request):
-#     if request.method == 'POST':
-#       	formulario = UserCreationForm(request.POST)
-#       	if formulario.is_valid:
-#       		formulario.save()
-#       		return HttpResponseRedirect('/')
-#     else:
-#         formulario = UserCreationForm()
-#     return render_to_response('usuarios/nuevoUsuario.html', {'formulario': formulario}, context_instance=RequestContext(request))
-@login_required()
-def NuevoUsuario(request):
-    if request.method == 'POST':  # If the form has been submitted...
-        form = RegistroUsuario(request.POST)  # A form bound to the POST data
-        if form.is_valid():  # All validation rules pass
- 
-            # Process the data in form.cleaned_data
-            username = form.cleaned_data["username"]
-            password = form.cleaned_data["password"]
-            email = form.cleaned_data["email"]
-            first_name = form.cleaned_data["first_name"]
-            last_name = form.cleaned_data["last_name"]
- 
-            # At this point, user is a User object that has already been saved
-            # to the database. You can continue to change its attributes
-            # if you want to change other fields.
-            user = User.objects.create_user(username, email, password)
-            user.first_name = first_name
-            user.last_name = last_name
- 
-            # Save new user attributes
-            user.save()
- 
-            #return HttpResponseRedirect('/perfil')  # Redirect after POST
-            return render_to_response('usuarios/configuracion.html', context_instance=RequestContext(request))
-    else:
-        form = RegistroUsuario()
- 
-    data = {
-        'form': form,
-    }
-    return render_to_response('usuarios/nuevoUsuario.html', data, context_instance=RequestContext(request))
 
+class NuevoUsuario(FormView):
+    template_name = 'usuarios/nuevoUsuario.html'
+    form_class = UserForm
+    success_url = reverse_lazy('perfil')
+
+    def form_valid(self, form):
+        user = form.save()
+        perfil = Perfiles()
+        perfil.usuario = user
+        perfil.nombre = form.cleaned_data['nombre']
+        perfil.apellido = form.cleaned_data['apellido']
+        perfil.telefono = form.cleaned_data['telefono']
+        perfil.save()
+        return super(NuevoUsuario, self).form_valid(form)
 
 @login_required()
 def Perfil(request):
@@ -57,6 +31,40 @@ def Perfil(request):
    #template_name = 'usuarios/configuracion.html'
 
 @login_required()
-def ActualizarPerfil(request):
-    return render_to_response('usuarios/actualizarPerfil.html', context_instance=RequestContext(request))
+def ActualizarPerfil(request, id_user):
+    #persona = request.GET.get('id_user')
+    p=Perfiles.objects.get(id=id_user)
+    if request.method == 'POST':
+        formulario=EditarPerfil(request.POST, instance=p)
+        if formulario.is_valid():
+            nombre = formulario.cleaned_data['nombre']
+            apellido = formulario.cleaned_data['apellido']
+            telefono = formulario.cleaned_data['telefono']
+            p.nombre = nombre
+            p.apellido = apellido
+            p.telefono = telefono
+            p.save()
+            return HttpResponseRedirect('/perfil')
+        
+    if request.method == 'GET':
+        formulario = EditarPerfil(initial={
+                'nombre':p.nombre,
+                'apellido':p.apellido,
+                'telefono':p.telefono
+            })
+    ctx = {'formulario':formulario,'perfiles':p}
+    return render_to_response('usuarios/actualizarPerfil.html', ctx, context_instance=RequestContext(request))
     #template_name = 'usuarios/actualizarPerfil.html'
+
+@login_required()
+def CambiarClave(request):
+    if request.method == 'POST':
+        form = EditarContrasenaForm(request.POST)
+        if form.is_valid():
+            request.user.password = make_password(form.cleaned_data['password'])
+            request.user.save()
+            return HttpResponseRedirect('/perfil')
+    else:
+        form = EditarContrasenaForm()
+    return render_to_response('usuarios/cambiarClave.html',{'form': form}, context_instance=RequestContext(request))
+    
