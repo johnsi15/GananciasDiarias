@@ -15,11 +15,10 @@
 		<ul class="nav nav-tabs nav-justified well">
   			<li role="presentation"><a href="/perfil">Perfil</a></li>
   			<li role="presentation"><a href="/actualizar-perfil/{{user.id}}">Editar Perfil</a></li>
-  			<li role="presentation"><a href="/usuario-nuevo">Crear Usuario</a></li>
 			<li role="presentation" class="active"><a href="/cambiar-clave">Cambiar Contraseña</a>
 				 <form method="post" action="">{% csrf_token %}
 			        {{ form.as_p }}
-			        <button class="btn btn-primary" type="submit">Actualizar contraseña</button>
+			        <button class="btn btn-success" type="submit">Actualizar contraseña</button>
 			        <a href="/perfil" class="btn btn-warning" type="submit">Cancelar</a>
 			    </form>
 			</li>

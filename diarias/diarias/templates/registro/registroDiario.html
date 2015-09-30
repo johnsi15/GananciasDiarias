@@ -1,17 +1,36 @@
-<!DOCTYPE>
-<html lang="es">
-<head>
-    <title>Registro Diario</title>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="{{STATIC_URL}}css/estilos.css">
-</head>
-	<body>
-		<h1>Registrar Ganancia</h1><!-- el ecntype es para guardar imagenes o cualquier archivo -->
+{% extends "base.html" %}
+
+{% block titulo %}Registrar Ganancia{% endblock %}
+
+{% block cabezera %}
+	<h2 id="titulos">REGISTRAR MIS GANANCIAS</h2>
+{% endblock %}
+
+{% block contenido %}
+	<style>
+		#id_usuario{display: none;}
+		label[for=id_usuario]{display: none;} 
+	</style>
+	<hr></hr>
+	<article class="col-md-2"></article>
+	<article class="col-md-6">
 		<form method="POST" enctype="multipart/form-data">{% csrf_token %}
 			{{ form.as_p }}
-			<button type="submit">Guardar</button>
+			<button class="btn btn-success" type="submit">Guardar</button>
 		</form>
-		<a href="/">Volver</a>
-		<a href="../verganancias">Ver Ganancias</a>
-	</body>
-</html>
+		<a href="/menu">Volver</a>
+		<a href="/verganancias">Ver Ganancias</a>
+		<hr></hr>
+	</article>
+
+{% endblock %}
+
+{% block script %}
+	<script>
+		$(document).ready(function(){
+			console.log( "ready!" );
+			$('#id_usuario > option[value="{{user.id}}"]').attr('selected', 'selected');
+		});
+	</script>
+{% endblock %}
+

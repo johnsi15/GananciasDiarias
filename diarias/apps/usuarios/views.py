@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView,FormView
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response,get_object_or_404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse_lazy
 from .forms import UserForm,EditarPerfil,EditarContrasenaForm
@@ -32,8 +32,8 @@ def Perfil(request):
 
 @login_required()
 def ActualizarPerfil(request, id_user):
-    #persona = request.GET.get('id_user')
-    p=Perfiles.objects.get(id=id_user)
+    #p=Perfiles.objects.get(id=id_user)
+    p = get_object_or_404(Perfiles, id=id_user)
     if request.method == 'POST':
         formulario=EditarPerfil(request.POST, instance=p)
         if formulario.is_valid():
@@ -53,7 +53,7 @@ def ActualizarPerfil(request, id_user):
                 'telefono':p.telefono
             })
     ctx = {'formulario':formulario,'perfiles':p}
-    return render_to_response('usuarios/actualizarPerfil.html', ctx, context_instance=RequestContext(request))
+    return render_to_response('usuarios/actualizarPerfil.html', ctx, context_instance=RequestContext(request))   
     #template_name = 'usuarios/actualizarPerfil.html'
 
 @login_required()

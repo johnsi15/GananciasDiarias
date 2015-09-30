@@ -11,6 +11,11 @@
 	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/estilos.css">
 </head>
 <body>
+	{% if user.is_authenticated %}
+		<script type="text/javascript">
+			 window.location="http://localhost:8000/menu";
+		</script>
+	{% endif %}
 	<header id="inicio">
 		<div class="container">
 			<h1>Ganancias y Gastos</h1>
@@ -23,18 +28,18 @@
 			<!-- col-xs-12 col-sm-12 col-md-12 col-lg-12-->
 			<!-- pequeño, medio pequeño, mediano, grande -->
 			<article class="col-md-4"></article>
-			<article class="col-md-4">
+			<article class="col-md-6">
 				<form class="form-horizontal" method="post" action="">{% csrf_token %}
 
 					<div class="form-group">
 					    <label for="inputEmail3" class="col-sm-2 control-label">Usuario</label>
-					    <div class="col-sm-10">
+					    <div class="col-sm-10 col-md-6">
 					      <input type="text" name="username" class="form-control" id="inputEmail3" placeholder="Nombre de Usuario">
 					    </div>
 					</div>
 					<div class="form-group">
 					    <label for="inputPassword3" class="col-sm-2 control-label">Clave</label>
-					    <div class="col-sm-10">
+					    <div class="col-sm-10 col-md-6">
 					      <input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password">
 						</div>
 					</div>
@@ -42,8 +47,11 @@
 					    <div class="col-sm-offset-2 col-sm-10">
 					      <div class="checkbox">
 					        <label>
-					          <input type="checkbox"> Recordarme
+					          <input type="checkbox"> Recordarme 
 					        </label>
+					        <label> 
+  								<a href="/usuario-nuevo"><h4>Crear Usuario</h4></a>
+  							</label>
 					      </div>
 					    </div>
 					</div>
@@ -56,6 +64,9 @@
 						<p id="error">Su nombre de usuario y la contraseña no coinciden. Por favor, inténtalo de nuevo.</p>
 					{% endif %}
 				</form>
+				<a href="{% url 'social:begin' 'twitter' %}"><img src="{{STATIC_URL}}img/twitter-login.png" alt=""></a>
+					<a href="{% url 'social:begin' 'facebook' %}"><img src="{{STATIC_URL}}img/facebook-login.png" alt=""></a>
+					<br>
 			</article>
 		</section>
 	</div>

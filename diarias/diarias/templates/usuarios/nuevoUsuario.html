@@ -9,28 +9,21 @@
 {% block contenido %}
 	<style>
 		.helptext{ display: none;}
+		header{ display: none;}
 	</style>
 	<hr></hr>
-	<article class="col-md-1"></article>
-	<article class="col-md-10">
+	<article class="col-md-3"></article>
+	<article class="col-md-6">
 		<ul class="nav nav-tabs nav-justified well">
-	  		<li role="presentation"> <a href="/perfil">Perfil</a></li>
-	  		<li role="presentation"><a href="/actualizar-perfil/{{user.id}}">Editar Perfil</a></li>
-	  		<li role="presentation" class="active"><a href="/usuario-nuevo/{{user.id}}">Crear Usuario</a>
 				<form class="form-horizontal" id="formulario" method="post" action="">{% csrf_token %}
 					<br>
 					{{form.as_p}}
 					<button type="submit" class="btn btn-primary">Registrar</button>
+					<a href="/" class="btn btn-danger" type="submit">Cancelar</a>
 				</form>
-	  		</li>
-	  		<li role="presentation"><a href="/cambiar-clave">Cambiar Contraseña</a></li>
 		</ul>
 		<hr></hr>
 	</article>
-{% endblock %}
-
-{% block etiquetaPerfil %}
-	class="active"
 {% endblock %}
 
 {% block script %}

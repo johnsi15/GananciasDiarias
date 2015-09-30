@@ -7,6 +7,8 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'diarias.views.home', name='home'),
     # url(r'^diarias/', include('diarias.foo.urls')),
+
+    url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^admin/', include(admin.site.urls)),
 
     #INICIO
@@ -18,3 +20,4 @@ urlpatterns = patterns('',
     #NUEVO_USUARIO
     url(r'^', include('apps.usuarios.urls')),
 )
+

@@ -11,7 +11,6 @@
 	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/estilos.css">
 </head>
 <body>
-{% if user.is_authenticated%}
 	<header>
 		<nav class="navbar navbar-inverse navbar-fixed-top" id="cabezera-menu">
 		  <div class="container">
@@ -65,10 +64,5 @@
 	<script type="text/javascript" src="{{STATIC_URL}}js/jquery.min.js"></script>
 	<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap.min.js"></script>		
 	{% block script %}{% endblock %}
-{% else %}
-	<script type="text/javascript">
-	    window.location="http://localhost:8000/";
-	</script>
-{% endif %}
 </body>
 </html>

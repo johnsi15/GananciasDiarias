@@ -127,13 +127,14 @@ INSTALLED_APPS = (
     'apps.registros',
     'apps.menu',
     'apps.usuarios',
+    'social.apps.django_app.default',
 )
 
 from django.core.urlresolvers import reverse_lazy
 LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = reverse_lazy('menu')
 LOGOUT_URL = reverse_lazy('logout')
-LOGIN_URL = '/'
+#LOGIN_URL = '/'
 
 
 # A sample logging configuration. The only tangible logging
@@ -164,3 +165,20 @@ LOGGING = {
         },
     }
 }
+
+
+AUTHENTICATION_BACKENDS = (
+            'social.backends.facebook.FacebookAppOAuth2',
+            'social.backends.facebook.FacebookOAuth2',
+            'social.backends.twitter.TwitterOAuth',
+            'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/menu'
+
+SOCIAL_AUTH_TWITTER_KEY = 'YfnaliAe2Sc1gszMlQesEikE5'
+SOCIAL_AUTH_TWITTER_SECRET = 'K2WFfNEfPS03RKaXB8CYG1dFBzAsvoQkUEGRpdagra6wRar0Ty'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '591882320949570'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'c4e3805f07943ae9cc5d1e2f6581335d'
+
