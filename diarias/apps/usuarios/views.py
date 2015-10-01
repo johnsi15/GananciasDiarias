@@ -13,7 +13,7 @@ from django.contrib.auth.hashers import make_password
 class NuevoUsuario(FormView):
     template_name = 'usuarios/nuevoUsuario.html'
     form_class = UserForm
-    success_url = reverse_lazy('perfil')
+    success_url = reverse_lazy('/')
 
     def form_valid(self, form):
         user = form.save()
@@ -22,6 +22,7 @@ class NuevoUsuario(FormView):
         perfil.nombre = form.cleaned_data['nombre']
         perfil.apellido = form.cleaned_data['apellido']
         perfil.telefono = form.cleaned_data['telefono']
+        perfil.correo = form.cleaned_data['correo']
         perfil.save()
         return super(NuevoUsuario, self).form_valid(form)
 
@@ -40,9 +41,11 @@ def ActualizarPerfil(request, id_user):
             nombre = formulario.cleaned_data['nombre']
             apellido = formulario.cleaned_data['apellido']
             telefono = formulario.cleaned_data['telefono']
+            correo = formulario.cleaned_data['correo']
             p.nombre = nombre
             p.apellido = apellido
             p.telefono = telefono
+            p.correo = correo
             p.save()
             return HttpResponseRedirect('/perfil')
         
@@ -50,7 +53,8 @@ def ActualizarPerfil(request, id_user):
         formulario = EditarPerfil(initial={
                 'nombre':p.nombre,
                 'apellido':p.apellido,
-                'telefono':p.telefono
+                'telefono':p.telefono,
+                'correo':p.correo
             })
     ctx = {'formulario':formulario,'perfiles':p}
     return render_to_response('usuarios/actualizarPerfil.html', ctx, context_instance=RequestContext(request))   

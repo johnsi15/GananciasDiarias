@@ -3,9 +3,17 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Perfiles
  
 class UserForm(UserCreationForm):
-	nombre = forms.CharField(max_length=10)
-	apellido = forms.CharField(max_length=15)
-	telefono = forms.IntegerField()
+    nombre = forms.CharField(
+        max_length=20,
+        widget=forms.TextInput(attrs={'class': 'form-control'}))
+    apellido = forms.CharField(
+        max_length=25,
+        widget=forms.TextInput(attrs={'class': 'form-control'}))
+    telefono = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    correo = forms.CharField(
+        max_length=50,
+        widget=forms.TextInput(attrs={'class': 'form-control'}))
+   
 
 class EditarPerfil(forms.ModelForm):
 	class Meta:

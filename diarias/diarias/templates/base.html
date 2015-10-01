@@ -11,6 +11,7 @@
 	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/estilos.css">
 </head>
 <body>
+	{% block header %} {% endblock %}
 	<header>
 		<nav class="navbar navbar-inverse navbar-fixed-top" id="cabezera-menu">
 		  <div class="container">
@@ -21,14 +22,14 @@
 			        <span class="icon-bar"></span>
 			        <span class="icon-bar"></span>
 			    </button>
-		      <a class="navbar-brand" href="menu.html">Ganancias y Gastos
+		      <a class="navbar-brand" href="/menu">Ganancias y Gastos
 		      </a>
 		    </div>
 
 		    <div class="collapse navbar-collapse" id="navbar-1">
 		      <ul class="nav navbar-nav">
 		        <li><a href="/menu">Inicio <span class="sr-only">(current)</span></a></li>
-		        <li><a href="ingresos.html">Ingresos</a></li>
+		        <li><a href="/registrar">Ingresos</a></li>
 		         <li><a href="gastos.html">Gastos</a></li>
 		         <li><a href="#">Mensualidad</a></li>
 		        <li class="dropdown">

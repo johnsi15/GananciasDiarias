@@ -9,5 +9,5 @@ class Registro(models.Model):
 	usuario = models.ForeignKey(User)
 
 	def __unicode__(self):
-		return self.nota
+		return self.usuario.username
 

@@ -2,6 +2,14 @@
 
 {% block titulo %}Nuevo Usuario{% endblock  %}
 
+{% block header %}
+	<section id="inicio">
+		<div class="container">
+				<h1>Ganancias y Gastos</h1>
+		</div>
+	</section>
+{% endblock %}
+
 {% block cabezera %}
 	<h2 id="titulos">CREAR NUEVO USUARIO</h2>
 {% endblock  %}
@@ -9,7 +17,7 @@
 {% block contenido %}
 	<style>
 		.helptext{ display: none;}
-		header{ display: none;}
+		header{display: none; }
 	</style>
 	<hr></hr>
 	<article class="col-md-3"></article>
@@ -33,9 +41,9 @@
 			$('#id_username').addClass('form-control');
 			$('#id_password1').addClass('form-control');
 			$('#id_password2').addClass('form-control');
-			$('#id_nombre').addClass('form-control');
+			/*$('#id_nombre').addClass('form-control');
 			$('#id_apellido').addClass('form-control');
-			$('#id_telefono').addClass('form-control');
+			$('#id_telefono').addClass('form-control');*/
 		});
 	</script>
 {% endblock %}
