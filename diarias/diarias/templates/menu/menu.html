@@ -1,92 +1,291 @@
-<!DOCTYPE HTML>
-<html lang="es">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	<title>Menu</title>
+{% extends "base.html" %}
 
-	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/estilos.css"> 
-</head>
- <style type="text/css">body { padding-top: 70px; }</style>
-<body>
-{% if user.is_authenticated %}
-	<header>
-		<nav class="navbar navbar-inverse navbar-fixed-top" id="cabezera-menu">
-		  <div class="container">
-		    <div class="navbar-header divider">
-		    	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-1" aria-expanded="false">
-			        <span class="sr-only">Menu</span>
-			        <span class="icon-bar"></span>
-			        <span class="icon-bar"></span>
-			        <span class="icon-bar"></span>
-			    </button>
-		      <a class="navbar-brand" href="/menu">Ganancias y Gastos
-		      </a>
-		    </div>
+{% block titulo %}Menu{% endblock %}
 
-		    <div class="collapse navbar-collapse" id="navbar-1">
-		      <ul class="nav navbar-nav">
-		        <li class="active"><a href="#">Inicio <span class="sr-only">(current)</span></a></li>
-		        <li><a href="/registrar">Ingresos</a></li>
-		         <li><a href="gastos.html">Gastos</a></li>
-		         <li><a href="#">Mensualidad</a></li>
-		        <li class="dropdown">
-		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user.username|capfirst}} <span class="caret"></span></a>
-		          <ul class="dropdown-menu">
-		            <li><a href="#">Action</a></li>
-		            <li><a href="#">Another action</a></li>
-		            <li><a href="#">Something else here</a></li>
-		            <li class="divider"></li>
-		            <li><a href="/perfil">Perfil</a></li>
-		            <li class="divider"></li>
-		            <li><a href="/cerrar">Cerrar Sesion</a></li>
-		          </ul>
-		        </li>
-		      </ul>
-		    </div><!-- /.navbar-collapse -->
-		  </div><!-- /.container -->
-		</nav>
-	</header>
+{% block cabezera %}
+	{% if user.is_authenticated %}
+		<!-- <h2 id="titulos">GANANCIAS Y GASTOS</h2> -->
+	{% else %}
+		<script type="text/javascript">
+			 window.location="http://localhost:8000/";
+		</script>
+	{% endif %}
+{% endblock %}
 
-	<div class="container">
-		<section class="main row">
-			<article class="col-md-2"></article>
-			<article class="col-md-4">
-				<table class="table table-hover table-bordered">
-				   <tr class="success">
-					  <th><h2>Ganancias</h2></th>
-				   </tr>
-				   <tr>
-				   	<td>$500.000</td>
-				   </tr>
-				</table>
-			</article>
-			<article class="col-md-4">
-				<table class="table table-hover table-bordered">
-				   <tr class="danger">
-					  <th><h2>Gastos</h2></th>
-				   </tr>
-				   <tr>
-				   	<td>$100.000</td>
-				   </tr>
-				</table>
-			</article>
-		</section>
-	</div>
-	<br><br><br><br><br><br><br><br><br>
-	<footer id="pieMenu">
-		<h2>@Jandrey15</h2>			
-	</footer>
-	
-	<!-- scripts -->	
-	<script type="text/javascript" src="{{STATIC_URL}}js/jquery.min.js"></script>
-	<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap.min.js"></script>
-{% else %}
-	<script type="text/javascript">
-		 window.location="http://localhost:8000/";
+{% block contenido %}
+	<style type="text/css">body { padding-top: 10px; }</style>
+	<h2 id="titulos">GANANCIAS Y GASTOS</h2>
+	<!-- Nota Rapida -->
+	<article id="notaRapida" class="col-md-3 col-sm-3">
+		<a href="" class="btn btn-default btn-lg" data-toggle="modal" data-target="#mensaje">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nota Rapida</a>
+			<div class="modal fade" id="mensaje" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+			<div class="modal-dialog" role="document">
+				   <div class="modal-content">
+				    <div class="modal-header">
+				     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				     	<span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title" >Nota Rapida</h4>
+				    </div>
+				    <form method="POST" enctype="multipart/form-data" id="agregar_nota_form">{% csrf_token %}
+				     <div class="modal-body">
+				          <div class="form-group">
+				            <label for="recipient-name" class="control-label">Titulo:</label>
+				            <input type="text" class="form-control" id="titulo" name="titulo">
+				          </div>
+				          <div class="form-group">
+				            <label for="message-text" class="control-label">Nota:</label>
+				            <textarea class="form-control" name="nota"></textarea>
+				          </div>
+				      </div>
+				      <input type="hidden" name='usuario' value='{{user.id}}'>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				        <button type="submit" id="agregarNota" class="btn btn-primary">Guardar Nota</button>
+				      </div>
+				    </div>
+				   </form>
+				  </div>
+			</div>
+	</article>
+	<!-- Agregar ganancia y gasto -->
+	<article class="col-md-3 col-xs-6 col-sm-4">
+		<a href="" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#ventana1">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ganancia y Gasto</a>
+			<div class="modal fade" id="ventana1" role="dialog" aria-labelledby="gridSystemModalLabel">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="gridSystemModalLabel">Registrar Ganancia y Gasto</h4>
+			      </div>
+			<form method="POST" enctype="multipart/form-data" class="form-horizontal">{% csrf_token %}
+			      <div class="modal-body">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Fecha:</label>
+							<div class="col-sm-10 col-md-9">
+								<input type="date" name="fecha" class="form-control" id="fecha" required >
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Ganancias:</label>
+							<div class="col-sm-10 col-md-9">
+								<input type="text" name="ganancia" class="form-control" value='0'>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Gasto:</label>
+							<div class="col-sm-10 col-md-9">
+								<input type="text" name="gasto" class="form-control" value='0'>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Nota:</label>
+							<div class="col-sm-10 col-md-9">
+								<textarea name="nota" cols="30" rows="5" class="form-control" required></textarea>
+							</div>
+						</div>
+						<input type="hidden" name='usuario' value='{{user.id}}'>
+				   </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				        <button type="submit" class="btn btn-success">Guardar</button>
+				   </div>
+			</form>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+	</article>
+	<!-- Agregar solo ganancia -->
+	<article class="col-md-2 col-xs-4 col-sm-3">
+			<a href="" class="btn btn-success btn-lg" data-toggle="modal" data-target="#ventana2">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ganancia</a>
+			<div class="modal fade" id="ventana2" role="dialog" aria-labelledby="gridSystemModalLabel">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title" id="gridSystemModalLabel">Registrar Ganancia</h4>
+				      </div>
+				     <form method="POST" enctype="multipart/form-data" class="form-horizontal">{% csrf_token %}
+				      <div class="modal-body">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Fecha:</label>
+								<div class="col-sm-10 col-md-9">
+									<input type="date" name="fecha" class="form-control" id="fecha_ganancia" required>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Ganancias:</label>
+								<div class="col-sm-10 col-md-9">
+									<input type="text" name="ganancia" class="form-control" value='0'>
+								</div>
+							</div>
+							<input type="hidden" name="gasto"  value='0'>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Nota:</label>
+								<div class="col-sm-10 col-md-9">
+									<textarea name="nota" cols="30" rows="5" class="form-control" required></textarea>
+								</div>
+							</div>
+							<input type="hidden" name='usuario' value='{{user.id}}'>
+							
+					   </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+					        <button type="submit" class="btn btn-success">Guardar</button>
+					      </div>
+					</form>
+				    </div><!-- /.modal-content -->
+				  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+	</article>
+	<!-- Agregar solo gasto -->
+	<article class="col-md-2 col-xs-2 col-sm-2">
+			<a href="" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#ventana3">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Gasto</a>
+			<div class="modal fade" id="ventana3" role="dialog" aria-labelledby="gridSystemModalLabel">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title" id="gridSystemModalLabel">Registrar Gasto</h4>
+				      </div>
+				<form method="POST" enctype="multipart/form-data" class="form-horizontal">{% csrf_token %}
+				      <div class="modal-body">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Fecha:</label>
+								<div class="col-sm-10 col-md-9">
+									<input type="date" name="fecha" class="form-control" id="fecha_gasto" required>
+								</div>
+							</div>
+							<input type="hidden" name="ganancia" value='0'>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Gasto:</label>
+								<div class="col-sm-10 col-md-9">
+									<input type="text" name="gasto" class="form-control" value='0'>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Nota:</label>
+								<div class="col-sm-10 col-md-9">
+									<textarea name="nota" cols="30" rows="5" class="form-control" required></textarea>
+								</div>
+							</div>
+							<input type="hidden" name='usuario' value='{{user.id}}'>	
+					   </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+					        <button type="submit" class="btn btn-success">Guardar</button>
+					      </div>
+				</form>
+			    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+	</article>
+{% endblock %}
+
+{% block segundocontenido %}
+	<aside id="nota_guardada"></aside>
+	<div class="col-lg-6" id="buscador">
+	    <div class="input-group">
+	      <input type="text" class="form-control" placeholder="Buscar" autofocus>
+	      <span class="input-group-btn">
+	        <button class="btn btn-default" type="button">Buscar</button>
+	      </span>
+	    </div><!-- /input-group -->
+	</div><!-- /.col-lg-6 -->
+<!-- 	<hr></hr> -->
+	<article class="col-md-12">
+		<div class="table-responsive panel panel-primary">
+			<div class="panel-heading"><h4>Ganancias y Gastos</h4></div>
+			<div class="panel-body"> 
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th><h3>Fecha</h3></th>
+						<th><h3>Ganancia</h3></th>
+						<th><h3>Gasto</h3></th>
+						<th><h3>Nota</h3></th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for registro in registros %}
+						{% if registro.usuario == user %}
+							<tr>
+								<td>{{registro.fecha|date:'d F Y'}}</td>
+								<td>{{registro.ganancia}}</td>
+							    <td>{{registro.gasto}}</td>
+								<td>{{registro.nota}} </td>
+								<td><a href="/modificar-registro/{{registro.id}}" class="btn btn-info btn-sm">Editar</a></td>
+								<td><a href="/eliminar-registro/{{registro.id}}" class="btn btn-danger btn-sm">Eliminar</a></td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+			</div>
+		</div>
+	</article>
+{% endblock %}
+
+{% block script %}
+	<script>
+		$(document).ready(function(){
+			console.log('ready');
+
+			$('#mensaje').on('shown.bs.modal', function(){
+			  $('#titulo').focus();
+			})
+
+			$('#ventana1').on('shown.bs.modal', function(){
+			  $('#fecha').focus();
+			})
+
+			$('#ventana2').on('shown.bs.modal', function(){
+			  $('#fecha_ganancia').focus();
+			})
+
+			$('#ventana3').on('shown.bs.modal', function(){
+			  $('#fecha_gasto').focus();
+			})
+
+			$('#agregarNota').click(function(e){
+				e.preventDefault();
+				console.log('ok ready;');
+				$.ajax({
+                   beforeSend: function(){
+
+                   },
+                   url: '/agregarAjax/',
+                   type: 'POST',
+                   data: $('#agregar_nota_form').serialize(),
+                   success: function(resp){
+                       //console.log(resp);
+                       if(resp == "Error"){
+                       	 console.log('Algo salio mal :(')
+                       }else{
+                          $('#agregar_nota_form')[0].reset();
+                          $('#mensaje').modal('hide')
+                          setTimeout(function(){ $("#nota_guardada .alert").fadeOut(6000).fadeIn(6000).fadeOut(900).fadeIn(800).fadeOut(600);}, 800); 
+                          var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Mensaje Guardado '+'</strong>'+' El mensaje se Guardo Correctamente.'+'</div>';
+                          $('#nota_guardada').html(exito);
+                       }
+                   },
+                   error: function(jqXHR,estado,error){
+                       console.log(estado);
+                       console.log(error);
+                   },
+                   complete: function(jqXHR,estado){
+                       console.log(estado);
+                   },
+                   timeout: 10000//10 segundos.
+               });/*Cierre del ajax*/
+			});/*Cierre de la funtion click*/
+
+
+		});/*Cierre del document*/
 	</script>
-{% endif %}
-</body>
-</html>
+{% endblock %}

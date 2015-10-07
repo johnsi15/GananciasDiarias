@@ -27,19 +27,19 @@
 		<section class="main row">
 			<!-- col-xs-12 col-sm-12 col-md-12 col-lg-12-->
 			<!-- pequeño, medio pequeño, mediano, grande -->
-			<article class="col-md-4"></article>
-			<article class="col-md-6">
+			<article class="col-md-4 "></article>
+			<article class="col-md-6 col-xs-12">
 				<form class="form-horizontal" method="post" action="">{% csrf_token %}
 
 					<div class="form-group">
 					    <label for="inputEmail3" class="col-sm-2 control-label">Usuario</label>
-					    <div class="col-sm-10 col-md-6">
+					    <div class="col-sm-6 col-md-6">
 					      <input type="text" name="username" class="form-control" id="inputEmail3" placeholder="Nombre de Usuario">
 					    </div>
 					</div>
 					<div class="form-group">
 					    <label for="inputPassword3" class="col-sm-2 control-label">Clave</label>
-					    <div class="col-sm-10 col-md-6">
+					    <div class="col-sm-6 col-md-6">
 					      <input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password">
 						</div>
 					</div>
@@ -49,23 +49,29 @@
 					        <label>
 					          <input type="checkbox"> Recordarme 
 					        </label>
-					        <label> 
-  								<a href="/usuario-nuevo"><h4>Crear Usuario</h4></a>
-  							</label>
+					        
 					      </div>
 					    </div>
 					</div>
 					<div class="form-group">
-					    <div class="col-sm-offset-2 col-sm-10">
-					      <button type="submit" class="btn btn-default">Iniciar Sesion</button>
+					    <div class="col-sm-offset-2 col-xs-12 col-sm-10 ">
+					      <button type="submit" class="btn btn-primary">INICIAR SESIÓN</button>
+						  <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-primary">INICIA CON FACEBOOK</a>
 					    </div>
 					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-xs-12  col-sm-12  col-md-10">
+							<label> 
+	  						 	¿No tienes cuenta? <a href="/usuario-nuevo" class="btn "><h4>Regístrate</h6></a>
+	  						</label>
+						</div>
+					</div>
+					
 					{% if form.errors %}
 						<p id="error">Su nombre de usuario y la contraseña no coinciden. Por favor, inténtalo de nuevo.</p>
 					{% endif %}
 				</form>
-				<a href="{% url 'social:begin' 'twitter' %}"><img src="{{STATIC_URL}}img/twitter-login.png" alt=""></a>
-					<a href="{% url 'social:begin' 'facebook' %}"><img src="{{STATIC_URL}}img/facebook-login.png" alt=""></a>
+				<!-- <a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}"><img src="{{STATIC_URL}}img/twitter-login.png" alt="Login Twitter"></a>  -->
 					<br>
 			</article>
 		</section>

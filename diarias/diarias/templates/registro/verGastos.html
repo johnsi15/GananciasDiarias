@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block titulo %}Gastos{% endblock %}
+
+{% block cabezera %}
+	<h2 id="titulos">MIS GASTOS</h2>
+{% endblock %}
+
+{% block contenido %}
+	<hr></hr>
+	<article class="col-md-12">
+		<div class="table-responsive">
+			<table class="table table-bordered">
+				<thead>					
+					<tr >
+						<th class="success"><h2>Ganancia Actual</h2></th>
+						<th class="danger"><h2>Gasto Actual</h2></th>
+						<th class="danger"></th>
+					</tr>
+				</thead>
+				<tbody>					
+					<tr>
+						<td>
+							<h3>{{suma}}</h3>
+						</td>
+						<td>
+							<h3>{{gasto}}</h3>
+						</td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>Fecha</th>
+						<th>Gasto</th>
+						<!-- <th>Gasto</th> -->
+						<th>Nota</th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for registro in registros %}
+						{% if registro.usuario == user %}
+							{% if registro.gasto > 0 %}
+								<tr>
+									<td>{{registro.fecha|date:'d F Y'}}</td>
+									<td>{{registro.gasto}}</td>
+									<!-- <td>{{registro.gasto}}</td> -->
+									<td>{{registro.nota}} </td>
+									<td><a href="/modificar-registro/{{registro.id}}" class="btn btn-info btn-sm">Editar</a></td>
+									<td><a href="/eliminar-registro/{{registro.id}}" class="btn btn-danger btn-sm">Eliminar</a></td>
+								</tr>
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</article>
+{% endblock %}

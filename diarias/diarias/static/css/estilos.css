@@ -7,6 +7,10 @@
   color: red;
 }
 
+#buscador{
+  margin-bottom: 2%;
+}
+
 #titulos{
   padding-bottom: 3%;
   text-align: center;
@@ -60,4 +64,5 @@
     background: rgba(83, 81, 70, 0.5);
     bottom:0!important;
     margin-bottom: -5%;
+    position: relative;
 }

@@ -29,12 +29,13 @@
 		    <div class="collapse navbar-collapse" id="navbar-1">
 		      <ul class="nav navbar-nav">
 		        <li><a href="/menu">Inicio <span class="sr-only">(current)</span></a></li>
-		        <li><a href="/registrar">Ingresos</a></li>
-		         <li><a href="gastos.html">Gastos</a></li>
+		        <li><a href="/ver-ganancias/{{user.id}}">Ingresos</a></li>
+		         <li><a href="/ver-gastos/{{user.id}}">Gastos</a></li>
 		         <li><a href="#">Mensualidad</a></li>
 		        <li class="dropdown">
-		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user.username|capfirst}}<span class="caret"></span></a>
+		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-user "></i> {{user.username|capfirst}}<span class="caret"></span></a>
 		          <ul class="dropdown-menu">
+		          	<li><a href="#">Action</a></li>
 		            <li><a href="#">Another action</a></li>
 		            <li><a href="#">Something else here</a></li>
 		            <li class="divider"></li>
@@ -53,7 +54,9 @@
 				{% block cabezera %} {% endblock %}
 
 				{% block contenido %} {% endblock %}
-				
+			</section>
+			<section class="main row">
+				{% block segundocontenido %} {% endblock %}				
 			</section>
 		</div>
 		

@@ -1,5 +1,6 @@
 # Django settings for diarias project.
 import os
+
 RUTA_PROYECTO = os.path.abspath(os.path.dirname(__file__))
 #from unipath import Path
 #RUTA_PROYECTO = Path(__file__).ancestor(2)
@@ -69,6 +70,7 @@ STATIC_URL = '/static/'
 # Additional locations of static files
 STATICFILES_DIRS = (
     os.path.join(RUTA_PROYECTO, 'static'),
+    #RUTA_PROYECTO.child('static'),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -127,6 +129,7 @@ INSTALLED_APPS = (
     'apps.registros',
     'apps.menu',
     'apps.usuarios',
+    'apps.notas',
     'social.apps.django_app.default',
 )
 
@@ -166,7 +169,6 @@ LOGGING = {
     }
 }
 
-
 AUTHENTICATION_BACKENDS = (
             'social.backends.facebook.FacebookAppOAuth2',
             'social.backends.facebook.FacebookOAuth2',
@@ -176,8 +178,8 @@ AUTHENTICATION_BACKENDS = (
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/menu'
 
-SOCIAL_AUTH_TWITTER_KEY = 'YfnaliAe2Sc1gszMlQesEikE5'
-SOCIAL_AUTH_TWITTER_SECRET = 'K2WFfNEfPS03RKaXB8CYG1dFBzAsvoQkUEGRpdagra6wRar0Ty'
+SOCIAL_AUTH_TWITTER_KEY = 'zP1pu2Rzzl6BXlgdRvu8OdSFw'
+SOCIAL_AUTH_TWITTER_SECRET = 'cul1Ov337BR8s8IN09qUiB7jb8lvRDckpIya64n8eOQO1Mn5wT'
 
 SOCIAL_AUTH_FACEBOOK_KEY = '591882320949570'
 SOCIAL_AUTH_FACEBOOK_SECRET = 'c4e3805f07943ae9cc5d1e2f6581335d'

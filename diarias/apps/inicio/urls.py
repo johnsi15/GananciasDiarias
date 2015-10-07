@@ -6,6 +6,8 @@ urlpatterns = patterns('',
 
 	url(r'^cerrar/$', 'django.contrib.auth.views.logout_then_login',
 	    name='logout'),
+	
+    url('', include('social.apps.django_app.urls', namespace='social')),
 
 	#url(r'^$', 'apps.inicio.views.index'), asi se asi anteriormente
 )

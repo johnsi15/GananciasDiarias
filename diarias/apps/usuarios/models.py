@@ -6,7 +6,7 @@ class Perfiles(models.Model):
 	nombre = models.CharField(max_length=20)
 	apellido = models.CharField(max_length=25)
 	telefono = models.IntegerField()
-	correo = models.CharField(max_length=50)
+	correo = models.EmailField(max_length=70)
 
 	def __unicode__(self):
 		return self.usuario.username
