@@ -1,68 +1,17 @@
-{% extends "base.html" %}
 
-{% block titulo %}Registrar Ganancia{% endblock %}
-
-{% block cabezera %}
-	<h2 id="titulos">REGISTRAR MIS GANANCIAS</h2>
+{% block segundocontenido %}
+	{% for registro in registros %}
+		{% if registro.usuario == user %}
+			<tr>
+				<td>{{registro.fecha|date:'d F Y'}}</td>
+				<td>{{registro.ganancia}}</td>
+			    <td>{{registro.gasto}}</td>
+				<td>{{registro.nota}} </td>
+				<td><a href="/modificar-registro/{{registro.id}}" class="btn btn-info btn-sm">Editar</a></td>
+				<td><a href="/eliminar-registro/{{registro.id}}" class="btn btn-danger btn-sm">Eliminar</a></td>
+			</tr>
+		{% endif %}
+	{% endfor %}
 {% endblock %}
 
-{% block contenido %}
-	<style>
-		#id_usuario{display: none;}
-		label[for=id_usuario]{display: none;} 
-	</style>
-	<hr></hr>
-	<article class="col-md-3"></article>
-	<article class="col-md-6">
-		<ul class="nav nav-tabs nav-justified well">
-			<form method="POST" enctype="multipart/form-data" class="form-horizontal">{% csrf_token %}
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Fecha:</label>
-					<div class="col-sm-10 col-md-9">
-						<input type="date" name="fecha" class="form-control" required>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Ganancias:</label>
-					<div class="col-sm-10 col-md-9">
-						<input type="text" name="ganancia" class="form-control" value='0'>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Gasto:</label>
-					<div class="col-sm-10 col-md-9">
-						<input type="text" name="gasto" class="form-control" value='0'>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Nota:</label>
-					<div class="col-sm-10 col-md-9">
-						<textarea name="nota" cols="30" rows="5" class="form-control" required></textarea>
-					</div>
-				</div>
-				<input type="hidden" name='usuario' value='{{user.id}}'>
-				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						<button class="btn btn-success" type="submit">Guardar</button>
-					</div>
-				</div>
-			</form>
-				{% if estado %}
-					<h3>El registro se hizo Correctamente</h3>
-				{% endif %}
-			<a href="/menu">Volver</a>
-			<a href="/verganancias">Ver Ganancias</a>
-		</ul>
-		<hr></hr>
-	</article>
-{% endblock %}
-
-{% block script %}
-	<script>
-		$(document).ready(function(){
-			console.log( "ready!" );
-			$('#id_usuario > option[value="{{user.id}}"]').attr('selected', 'selected');
-		});
-	</script>
-{% endblock %}
 

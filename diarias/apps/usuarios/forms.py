@@ -15,9 +15,19 @@ class UserForm(UserCreationForm):
         widget=forms.TextInput(attrs={'class': 'form-control'}))
    
 
-class EditarPerfil(forms.ModelForm):
-	class Meta:
-		model = Perfiles
+class EditarPerfil(forms.Form):
+    nombre = forms.CharField(
+        max_length=20,
+        widget=forms.TextInput(attrs={'class': 'form-control'}))
+    apellido = forms.CharField(
+        max_length=25,
+        widget=forms.TextInput(attrs={'class': 'form-control'}))
+    telefono = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    correo = forms.CharField(
+        max_length=50,
+        widget=forms.TextInput(attrs={'class': 'form-control'}))
+	# class Meta:
+	# 	model = Perfiles
 
 class EditarContrasenaForm(forms.Form):
 

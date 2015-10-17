@@ -29,15 +29,15 @@
 		    <div class="collapse navbar-collapse" id="navbar-1">
 		      <ul class="nav navbar-nav">
 		        <li><a href="/menu">Inicio <span class="sr-only">(current)</span></a></li>
-		        <li><a href="/ver-ganancias/{{user.id}}">Ingresos</a></li>
-		         <li><a href="/ver-gastos/{{user.id}}">Gastos</a></li>
+		        <li><a href="/ver-ganancias/">Ingresos</a></li>
+		         <li><a href="/ver-gastos/">Gastos</a></li>
 		         <li><a href="#">Mensualidad</a></li>
 		        <li class="dropdown">
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-user "></i> {{user.username|capfirst}}<span class="caret"></span></a>
 		          <ul class="dropdown-menu">
 		          	<li><a href="#">Action</a></li>
 		            <li><a href="#">Another action</a></li>
-		            <li><a href="#">Something else here</a></li>
+		            <li><a href="/ver-notas-rapidas">Notas Rapidas</a></li>
 		            <li class="divider"></li>
 		            <li {% block etiquetaPerfil %}{% endblock %}><a href="/perfil">Perfil</a></li>
 		            <li class="divider"></li>
@@ -55,18 +55,22 @@
 
 				{% block contenido %} {% endblock %}
 			</section>
-			<section class="main row">
+			<section class="espacio row">
+				{% block contenidomedio %} {% endblock %}
+			</section>
+			<section class="espacio row">
 				{% block segundocontenido %} {% endblock %}				
 			</section>
 		</div>
-		
+
 	<footer id="pieMenu">
 		<h2>@Jandrey15</h2>
 	</footer>
 	
 	<!-- scripts -->
 	<script type="text/javascript" src="{{STATIC_URL}}js/jquery.min.js"></script>
-	<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap.min.js"></script>		
+	<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}js/script.js"></script>			
 	{% block script %}{% endblock %}
 </body>
 </html>

@@ -28,7 +28,9 @@ class NuevoUsuario(FormView):
 
 @login_required()
 def Perfil(request):
-    return render_to_response('usuarios/configuracion.html', context_instance=RequestContext(request))
+    if request.method == 'GET':
+        #ctx = {'email': social_user}
+        return render_to_response('usuarios/configuracion.html', context_instance=RequestContext(request))
    #template_name = 'usuarios/configuracion.html'
 
 @login_required()
@@ -36,7 +38,7 @@ def ActualizarPerfil(request, id_user):
     #p=Perfiles.objects.get(id=id_user)
     p = get_object_or_404(Perfiles, id=id_user)
     if request.method == 'POST':
-        formulario=EditarPerfil(request.POST, instance=p)
+        formulario=EditarPerfil(request.POST)
         if formulario.is_valid():
             nombre = formulario.cleaned_data['nombre']
             apellido = formulario.cleaned_data['apellido']

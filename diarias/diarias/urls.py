@@ -18,5 +18,6 @@ urlpatterns = patterns('',
     url(r'^', include('apps.menu.urls')),
     #NUEVO_USUARIO
     url(r'^', include('apps.usuarios.urls')),
+    #NOTAS RAPIDAS
+    url(r'^', include('apps.notas.urls')),
 )
-

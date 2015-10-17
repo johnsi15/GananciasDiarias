@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block titulo %}Notas Rapidas{% endblock %}
+
+{% block cabezera %}
+	{% if user.is_authenticated %}
+		<!-- <h2 id="titulos">GANANCIAS Y GASTOS</h2> -->
+	<div id="notaStyle">
+		<a href="" class="btn btn-default btn-lg" data-toggle="modal" data-target="#mensaje">
+		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nota Rapida</a>
+	</div>
+	{% else %}
+		<script type="text/javascript">
+			 window.location="http://localhost:8000/";
+		</script>
+	{% endif %}
+{% endblock %}
+
+{% block contenido %}
+<style> 
+	#id_nota{ display: none;}
+	#notaStyle{float: left; padding-top: 3%;}
+</style>
+	<h2 id="titulos">NOTAS RAPIDAS</h2>
+	<aside id="mensajeExitoso"></aside>
+	<br>
+	<!-- Nota Rapida -->
+	<div class="col-lg-6" id="buscador">
+	    <div class="input-group">
+	      <input type="text" class="form-control" placeholder="Buscar" autofocus>
+	      <span class="input-group-btn">
+	        <button class="btn btn-default" type="button">Buscar</button>
+	      </span>
+	    </div><!-- /input-group -->
+	</div><!-- /.col-lg-6 -->
+<!-- 	<hr></hr> -->
+<!-- Tabla de notas rapidas modificar e eliminar -->
+	<article class="col-md-12">
+		<div class="table-responsive panel panel-primary">
+			<div class="panel-heading"><h4>Notas Rapidas</h4></div>
+			<div class="panel-body"> 
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th><h3>Fecha</h3></th>
+						<th><h3>Titulo</h3></th>
+						<th><h3>Nota</h3></th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody id="FechaTituloNota">
+					{% for registro in registros %}
+						{% if registro.usuario == user %}
+							<tr>
+								<td id="id_nota">{{registro.id}}</td>
+								<td>{{registro.fecha|date:'d F Y'}}</td>
+								<td>{{registro.titulo}}</td>
+								<td>{{registro.nota}} </td>
+								<td><a href=""  class="btn btn-info btn-sm" data-toggle="modal" data-target="#modificar" id="modificarNota"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar</a></td>
+								<td><a href=""  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminar" id="eliminarNota"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar</a></td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+			</div>
+		</div>
+	</article>	
+<!-- Agregar nota rapida -->
+	<div class="modal fade" id="mensaje" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+				     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				     	<span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title" >Nota Rapida</h4>
+				</div>
+				<form method="POST" enctype="multipart/form-data" id="agregar_nota_form">{% csrf_token %}
+				    <div class="modal-body">
+				          <div class="form-group">
+				            <label for="recipient-name" class="control-label">Titulo:</label>
+				            <input type="text" class="form-control" id="AgregarTitulo" name="titulo">
+				          </div>
+				          <div class="form-group">
+				            <label for="message-text" class="control-label">Nota:</label>
+				            <textarea class="form-control" name="nota"></textarea>
+				          </div>
+				    </div>
+				    <input type="hidden" name='usuario' value='{{user.id}}'>
+				    <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				        <button type="submit" id="agregarNota" class="btn btn-primary">Guardar Nota</button>
+				    </div>
+				</form>   
+			</div>
+		</div>
+	</div> 
+<!-- Modificair la nota modal -->
+	<div class="modal fade" id="modificar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+			   		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			   		<span aria-hidden="true">&times;</span></button>
+			    	<h4 class="modal-title" >Modificar Nota Rapida</h4>
+				</div>
+					<form method="POST" enctype="multipart/form-data" id="modificar_nota_form">{% csrf_token %}
+				     <div class="modal-body">
+				          <div class="form-group">
+				            <label for="recipient-name" class="control-label">Titulo:</label>
+				            <input type="text" class="form-control" id="titulo" name="titulo">
+				          </div>
+				          <div class="form-group">
+				            <label for="message-text" class="control-label">Nota:</label>
+				            <textarea class="form-control" id="nota" name="nota"></textarea>
+				          </div>
+				      </div>
+				      <input type="hidden" id="idnota" name="idnota">
+				      <!-- <input type="hidden" name='usuario' value='{{user.id}}'> -->
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				        <button type="submit" id="clickModificarNota" class="btn btn-success">Modificar Nota</button>
+				      </div>
+		        	</form>
+		    </div>
+		</div>
+	</div>
+<!-- Eliminar la nota modal -->
+	<div class="modal fade" id="eliminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+			   		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			   		<span aria-hidden="true">&times;</span></button>
+			    	<h4 class="modal-title" >Eliminar Nota Rapida</h4>
+				</div>
+					<form method="POST" enctype="multipart/form-data" id="eliminar_nota_form">{% csrf_token %}
+				     <div class="modal-body">
+				          <label for="">Estas Seguro de Eliminar, <span id="titulo_eliminar"></span></label>
+				      </div>
+				      <input type="hidden" id="ideliminar" name="ideliminar">
+				      <!-- <input type="hidden" name='usuario' value='{{user.id}}'> -->
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				        <button type="submit" id="clickEliminarNota" class="btn btn-danger">Eliminar Nota</button>
+				      </div>
+		        	</form>
+		    </div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block segundocontenido %}
+	
+{% endblock %}

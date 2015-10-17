@@ -20,6 +20,9 @@
 .main{
   margin-top: 10%;
 }
+.espacio{
+  margin-top: 5%;
+}
 
 #login{
   position: absolute;
@@ -55,7 +58,7 @@
 }
 
 #pieMenu{
-    padding-top: 3%;
+    padding-top: 2%;
     padding-bottom: 5%;
     color: white;
     text-align: center;
@@ -65,4 +68,8 @@
     bottom:0!important;
     margin-bottom: -5%;
     position: relative;
+}
+
+#botonesRapidos{
+  margin-top: 2%;
 }

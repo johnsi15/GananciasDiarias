@@ -16,15 +16,17 @@
 	<article class="col-md-10">
 		<ul class="nav nav-tabs nav-justified well">
   			<li role="presentation"> <a href="/perfil">Perfil</a></li>
-  			<li role="presentation" class="active"><a href="/actualizar-perfil/{{user.id}}">Editar Perfil</a>
-				<form class="form-horizontal" id="formulario" method="post" action="">{% csrf_token %}
-					{{formulario.as_p}}
-					<br>
-					<button type="submit" class="btn btn-success">Actualizar</button>
-					<a href="/perfil" class="btn btn-warning" type="submit">Cancelar</a>
-				</form>
+  			<li role="presentation" class="active"><a href="">Editar Perfil</a>
+				{% if user.perfiles.id == user.id %}
+					<form class="form-horizontal" id="formulario" method="post" action="">{% csrf_token %}
+						{{formulario.as_p}}
+						<br>
+						<button type="submit" class="btn btn-success">Actualizar</button>
+						<a href="/perfil" class="btn btn-warning" type="submit">Cancelar</a>
+					</form>
+				{% endif %}
   			</li>
-  			<li role="presentation"><a href="/cambiar-clave">Cambiar Contraseña</a></li>
+  			<li role="presentation"><a href="/perfil/cambiar-clave/">Cambiar Contraseña</a></li>
 		</ul>
 		<hr></hr>
 	</article>
@@ -34,11 +36,11 @@
 	<script>
 		$(document).ready(function(){
 			console.log( "ready!" );
-			$('#id_nombre').addClass('form-control');
+			/*$('#id_nombre').addClass('form-control');
 			$('#id_apellido').addClass('form-control');
 			$('#id_telefono').addClass('form-control');
 			$('#id_correo').addClass('form-control');
-			$('#id_usuario > option[value="{{user.id}}"]').attr('selected', 'selected');
+			$('#id_usuario > option[value="{{user.id}}"]').attr('selected', 'selected');*/
 		});
 	</script>
 {% endblock %}

@@ -22,16 +22,16 @@ class AgregarAjax(CreateView):
 	 	notas.usuario = user
 
 	 	notas.save()
-	 	estado = True
-	 	ctx = {'estado': estado}
- 		return render_to_response('menu/menu.html', ctx,context_instance=RequestContext(request))
+	 	registros = Notas.objects.all()
+		ctx = {'registros':registros}
+		return render_to_response('notas/verNotas.html', ctx,  context_instance=RequestContext(request))
 
 class Menu(ListView,CreateView):
 	template_name = 'menu/menu.html'
     # Redirect to a success page.
-	model = Registro
+	#model = Registro
 	#context_object_name = "registros"
-	success_url = reverse_lazy('menu')#redireccionamos depues de registrar 
+	#success_url = reverse_lazy('menu')#redireccionamos depues de registrar 
 
 	def get(self, request, *args, **kwargs):
 		if request.method == 'POST':
@@ -54,8 +54,12 @@ class Menu(ListView,CreateView):
 		else:
 			registros = Registro()
 			registros = Registro.objects.all()
+			#print request.user.id
+			id_user = request.user.id
 			# id_user = request.GET['usuario']
 			# user = User.objects.get(id=id_user)
-		 	ctx = {'registros': registros}
+			ganancia = Registro.objects.filter(usuario__id=id_user).aggregate(Sum('ganancia'))
+	  		gasto = Registro.objects.filter(usuario__id=id_user).aggregate(Sum('gasto'))
+		 	ctx = {'registros': registros, 'ganancia':ganancia, 'gasto':gasto}
 
 			return render_to_response('menu/menu.html',ctx, context_instance=RequestContext(request))
