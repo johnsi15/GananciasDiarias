@@ -32,18 +32,34 @@ $(document).ready(function(){
               url: '/agregarAjax/',
               type: 'POST',
               data: $('#agregar_nota_form').serialize(),
-              success: function(resp){
+              success: function(data){
                 //console.log(resp);
-                if(resp == "Error"){
+                if(data == "Error"){
                  	 console.log('Algo salio mal :(')
                 }else{
-                   $('#agregar_nota_form')[0].reset();
+                   $('#agregar_nota_form')[0].reset();//limpiamos el formulario
                    $('#mensaje').modal('hide')
-                   $('#FechaTituloNota').empty();//limpiamos la tabla 
-                   $('#FechaTituloNota').html(resp);//mandamos los nuevos datos a la tabla
+                   var html = "";
+                   var datos = JSON.parse(data);
+                    //console.log(datos);
+                  for (var i = 0; i < datos.length; i++) {
+                     /* console.log(datos[i].pk);*/
+                     //console.log(datos[i].fields.fecha);
+                     html +='<tr><td id="id_nota">'+
+                                        datos[i].pk+'</td><td>'+
+                                        datos[i].fields.fecha+'</td><td>'+
+                                        datos[i].fields.titulo+'</td><td>'+
+                                        datos[i].fields.nota+'</td>'+
+                        '<td><a href=""  class="btn btn-info btn-sm" data-toggle="modal" data-target="#modificar" id="modificarNota"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar</a></td>'+
+                        '<td><a href=""  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminar" id="eliminarNota"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar</a></td>'+
+                     '</tr>'
+                  };
+                  /* $('#FechaTituloNota').empty();//limpiamos la tabla */
+                   $('#FechaTituloNota').html(html);//mandamos los nuevos datos a la tabla
                     setTimeout(function(){ $("#mensajeExitoso .alert").fadeOut(6000).fadeIn(6000).fadeOut(900).fadeIn(800).fadeOut(600);}, 800); 
                    var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+'X'+'</button>'+'<strong>'+'Nota Guardada '+'</strong>'+' La nota se guardo Correctamente.'+'</div>';
                    $('#mensajeExitoso').html(exito);
+                   /*$.getScript('/{{STATIC_URL}}/js/script.js/');*/
                 }
               },
               error: function(jqXHR,estado,error){
@@ -176,18 +192,15 @@ $(document).ready(function(){
   })
 
  //Extraer los datos de la tabla para mostrarlos en el form
-  $('#FechaTituloNota #modificarNota').click(function(e){
+  $('#FechaTituloNota' ).on("click","#modificarNota",function(){
       /*var variable = */
       console.log('poraca pasamos bien.');
 
       //alert($(this).attr('href'));
       //estraemos los campos.
-      var variable1 = $('#idnota').val($(this).parent().parent().children('td:eq(0)').text());
-      var variable2= $('#titulo').val($(this).parent().parent().children('td:eq(2)').text());
-      var variable3 = $('#nota').val($(this).parent().parent().children('td:eq(3)').text());
-      console.log(variable1);
-      console.log(variable2);
-      console.log(variable3);
+      $('#idnota').val($(this).parent().parent().children('td:eq(0)').text());
+      $('#titulo').val($(this).parent().parent().children('td:eq(2)').text());
+      $('#nota').val($(this).parent().parent().children('td:eq(3)').text());
       //var url= $(this).attr('href');
   });
 
@@ -208,12 +221,27 @@ $(document).ready(function(){
                 }else{
                  //$('#modificar_nota_form')[0].reset();//borramos los datos del form 
                  $('#modificar').modal('hide')//ocultamos el modal 
-                 $('#FechaTituloNota').empty();//limpiamos la tabla 
-                  $('#FechaTituloNota').html(data);//mandamos los nuevos datos a la tabla
-                    setTimeout(function(){ $("#mensajeExitoso .alert").fadeOut(6000).fadeIn(3000).fadeOut(900).fadeIn(800).fadeOut(600);}, 800); 
+                /* $('#FechaTituloNota').empty();//limpiamos la tabla */
+                  var html = "";
+                  var datos = JSON.parse(data);
+                    //console.log(datos);
+                  for (var i = 0; i < datos.length; i++) {
+                     /* console.log(datos[i].pk);*/
+                     //console.log(datos[i].fields.fecha);
+                     html +='<tr><td id="id_nota">'+
+                                        datos[i].pk+'</td><td>'+
+                                        datos[i].fields.fecha+'</td><td>'+
+                                        datos[i].fields.titulo+'</td><td>'+
+                                        datos[i].fields.nota+'</td>'+
+                        '<td><a href=""  class="btn btn-info btn-sm" data-toggle="modal" data-target="#modificar" id="modificarNota"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar</a></td>'+
+                        '<td><a href=""  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminar" id="eliminarNota"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar</a></td>'+
+                     '</tr>'
+                  };                  
+                  $('#FechaTituloNota').html(html);//mandamos los nuevos datos a la tabla
+                    setTimeout(function(){ $("#mensajeEditado .alert").fadeOut(6000).fadeIn(3000).fadeOut(900).fadeIn(800).fadeOut(600);}, 800); 
                    var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+
                    'X'+'</button>'+'<strong>'+'Editado'+'</strong>'+' La nota se modifico Correctamente.'+'</div>';
-                  $('#mensajeExitoso').html(exito);//mensaje de exito
+                  $('#mensajeEditado').html(exito);//mensaje de exito
                 }
               },
               error: function(jqXHR,estado,error){
@@ -231,7 +259,7 @@ $(document).ready(function(){
 /*______________________________________________________________________________________*/
 /*Elminar las notas rapidas */
 //Extraer los datos de la tabla para mostrarlos en el form
-  $('#FechaTituloNota #eliminarNota').click(function(e){
+  $('#FechaTituloNota').on("click","#eliminarNota",function(e){
       /*e.preventDefault();*/
       console.log('poraca pasamos bien.');
       //extraemos el id de la nota que vamos a eliminar
@@ -256,12 +284,27 @@ $(document).ready(function(){
                 }else{
                  //$('#eliminar_nota_form')[0].reset();//borramos los datos del form 
                  $('#eliminar').modal('hide')//ocultamos el modal 
-                 $('#FechaTituloNota').empty();//limpiamos la tabla 
-                  $('#FechaTituloNota').html(data);//mandamos los nuevos datos a la tabla
-                    setTimeout(function(){ $("#mensajeExitoso .alert").fadeOut(6000).fadeIn(3000).fadeOut(900).fadeIn(800).fadeOut(600);}, 800); 
+              /* $('#FechaTituloNota').empty();//limpiamos la tabla */
+                  var html = "";
+                  var datos = JSON.parse(data);
+                    //console.log(datos);
+                  for (var i = 0; i < datos.length; i++) {
+                     /* console.log(datos[i].pk);*/
+                     //console.log(datos[i].fields.fecha);
+                     html +='<tr><td id="id_nota">'+
+                                        datos[i].pk+'</td><td>'+
+                                        datos[i].fields.fecha+'</td><td>'+
+                                        datos[i].fields.titulo+'</td><td>'+
+                                        datos[i].fields.nota+'</td>'+
+                        '<td><a href=""  class="btn btn-info btn-sm" data-toggle="modal" data-target="#modificar" id="modificarNota"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar</a></td>'+
+                        '<td><a href=""  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminar" id="eliminarNota"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar</a></td>'+
+                     '</tr>'
+                  };
+                  $('#FechaTituloNota').html(html);//mandamos los nuevos datos a la tabla
+                    setTimeout(function(){ $("#mensajeEditado .alert").fadeOut(6000).fadeIn(3000).fadeOut(900).fadeIn(800).fadeOut(600);}, 800); 
                    var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+
                    'X'+'</button>'+'<strong>'+'Eliminado'+'</strong>'+' La nota se eliminino Correctamente.'+'</div>';
-                  $('#mensajeExitoso').html(exito);//mensaje de exito
+                  $('#mensajeEditado').html(exito);//mensaje de exito
                 }
               },
               error: function(jqXHR,estado,error){
@@ -274,6 +317,148 @@ $(document).ready(function(){
               timeout: 10000//10 segundos.
         });/*Cierre del ajax*/
     });/*Cierre de la funtion click*/
-  
+
+
+
+/*___________________________________________________________________*/
+//modificar registros de las GANANCIAS Y LOS GASTOS
+$('#modificar').on('shown.bs.modal', function(){
+     $('#fechaModificar').focus();
+})
+
+//Extraer los datos de la tabla para mostrarlos en el form
+$('#FechaGananciasGastos' ).on("click","#modificarRegistro",function(){
+      /*var variable = */
+      console.log('poraca pasamos bien.');
+
+      //alert($(this).attr('href'));
+      //estraemos los campos.
+      $('#id_registro').val($(this).parent().parent().children('td:eq(0)').text());
+      $('#fechaModificar').val($(this).parent().parent().children('td:eq(1)').text());
+      $('#gananciaMod').val($(this).parent().parent().children('td:eq(2)').text());
+      $('#gastoMod').val($(this).parent().parent().children('td:eq(3)').text());
+      $('#notaMod').val($(this).parent().parent().children('td:eq(4)').text());
+      //var url= $(this).attr('href');
+});
+
+$('#clickModificarRegistro').click(function(e){
+        e.preventDefault();
+        console.log('ok ready;');
+        $.ajax({
+              beforeSend: function(){
+
+              },
+              url: '/modificar/',
+              type: 'POST',
+              data: $('#modificar_registro_form').serialize(),
+              success: function(data){
+                //console.log(data);
+                if(data == "Error"){
+                  console.log('Algo salio mal :(')
+                }else{
+                 //$('#modificar_nota_form')[0].reset();//borramos los datos del form 
+                 $('#modificar').modal('hide')//ocultamos el modal 
+                /* $('#FechaTituloNota').empty();//limpiamos la tabla */
+                  var html = "";
+                  var datos = JSON.parse(data);
+                    //console.log(datos);
+                  for (var i = 0; i < datos.length; i++) {
+                     /* console.log(datos[i].pk);*/
+                     //console.log(datos[i].fields.fecha);
+                     html +='<tr><td id="idregistro">'+
+                                        datos[i].pk+'</td><td>'+
+                                        datos[i].fields.fecha+'</td><td>'+
+                                        datos[i].fields.ganancia+'</td><td>'+
+                                        datos[i].fields.gasto+'</td><td>'+
+                                        datos[i].fields.nota+'</td>'+
+                        '<td><a href=""  class="btn btn-info btn-sm" data-toggle="modal" data-target="#modificar" id="modificarRegistro"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar</a></td>'+
+                        '<td><a href=""  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminar" id="eliminarRegistro"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar</a></td>'+
+                     '</tr>'
+                  };                  
+                  $('#FechaGananciasGastos').html(html);//mandamos los nuevos datos a la tabla
+                    setTimeout(function(){ $("#mensajeEditado .alert").fadeOut(6000).fadeIn(3000).fadeOut(900).fadeIn(800).fadeOut(600);}, 800); 
+                   var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+
+                   'X'+'</button>'+'<strong>'+'Editado'+'</strong>'+' El registro se modifico correctamente.'+'</div>';
+                  $('#mensajeEditado').html(exito);//mensaje de exito
+                }
+              },
+              error: function(jqXHR,estado,error){
+                  console.log(estado);
+                  console.log(error);
+              },
+              complete: function(jqXHR,estado){
+                  console.log(estado);
+              },
+              timeout: 10000//10 segundos.
+        });/*Cierre del ajax*/
+    });/*Cierre de la funtion click*/
+
+/*_________________________________________________________________________________*/
+/*ELIMINAMOS LOS REGISTROS*/
+//Extraer los datos de la tabla para mostrarlos en el form
+$('#FechaGananciasGastos' ).on("click","#eliminarRegistro",function(){
+      /*var variable = */
+      console.log('poraca pasamos bien.');
+
+      //alert($(this).attr('href'));
+      //estraemos los campos.
+    $('#id_eliminar').val($(this).parent().parent().children('td:eq(0)').text());
+    $("#titulo_eliminar").html($(this).parent().parent().children('td:eq(4)').text());
+      //var url= $(this).attr('href');
+});
+
+
+  $('#clickEliminarRegistro').click(function(e){
+        e.preventDefault();
+        console.log('ok ready;');
+        $.ajax({
+              beforeSend: function(){
+
+              },
+              url: '/eliminar/',
+              type: 'POST',
+              data: $('#eliminar_nota_form').serialize(),
+              success: function(data){
+                //console.log(data);
+                if(data == "Error"){
+                  console.log('Algo salio mal :(')
+                }else{
+                 //$('#modificar_nota_form')[0].reset();//borramos los datos del form 
+                 $('#eliminar').modal('hide')//ocultamos el modal 
+                /* $('#FechaTituloNota').empty();//limpiamos la tabla */
+                  var html = "";
+                  var datos = JSON.parse(data);
+                    //console.log(datos);
+                  for (var i = 0; i < datos.length; i++) {
+                     /* console.log(datos[i].pk);*/
+                     //console.log(datos[i].fields.fecha);
+                     html +='<tr><td id="idregistro">'+
+                                        datos[i].pk+'</td><td>'+
+                                        datos[i].fields.fecha+'</td><td>'+
+                                        datos[i].fields.ganancia+'</td><td>'+
+                                        datos[i].fields.gasto+'</td><td>'+
+                                        datos[i].fields.nota+'</td>'+
+                        '<td><a href=""  class="btn btn-info btn-sm" data-toggle="modal" data-target="#modificar" id="modificarRegistro"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar</a></td>'+
+                        '<td><a href=""  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminar" id="eliminarRegistro"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar</a></td>'+
+                     '</tr>'
+                  };                  
+                  $('#FechaGananciasGastos').html(html);//mandamos los nuevos datos a la tabla
+                    setTimeout(function(){ $("#mensajeEditado .alert").fadeOut(6000).fadeIn(3000).fadeOut(900).fadeIn(800).fadeOut(600);}, 800); 
+                   var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+
+                   'X'+'</button>'+'<strong>'+'Eliminado'+'</strong>'+' El registro se elimino correctamente.'+'</div>';
+                  $('#mensajeEditado').html(exito);//mensaje de exito
+                }
+              },
+              error: function(jqXHR,estado,error){
+                  console.log(estado);
+                  console.log(error);
+              },
+              complete: function(jqXHR,estado){
+                  console.log(estado);
+              },
+              timeout: 10000//10 segundos.
+        });/*Cierre del ajax*/
+  });/*Cierre de la funtion click*/
+
 
 });/*Cierre del document*/

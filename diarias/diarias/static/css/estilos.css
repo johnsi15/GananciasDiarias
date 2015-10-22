@@ -73,3 +73,11 @@
 #botonesRapidos{
   margin-top: 2%;
 }
+
+#mensajeEditado{
+  padding-left: 3%;
+  float: left;
+  position: fixed;
+  z-index: 1;
+  width: 85%;
+}
