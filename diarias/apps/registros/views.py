@@ -7,7 +7,8 @@ from django.contrib.auth.models import User
 from django.db.models import Count, Min, Sum, Avg, Max
 from django.core import serializers
 from django.http import HttpResponse
-
+import datetime
+# Agregar Ganancias y Gastos.
 class AgregarRegistro(CreateView):
 	# template_name = 'registro/registroDiario.html'#primeramente el nombre de la carpeta que esta en templetes y luego el nombre del arhivo como tal
 	# model = Registro
@@ -18,7 +19,11 @@ class AgregarRegistro(CreateView):
 		id_user = request.POST['usuario']
 		user = User.objects.get(id=id_user)
 
-		registro.fecha = request.POST['fecha']
+		if request.POST['fecha'] == '':
+			registro.fecha = datetime.datetime.now()
+		else:
+			registro.fecha = request.POST['fecha']
+
 		registro.ganancia = request.POST['ganancia']
 		registro.gasto = request.POST['gasto']
 		registro.nota = request.POST['nota']
@@ -26,14 +31,13 @@ class AgregarRegistro(CreateView):
 
 		registro.save()
 
-		registros = Registro()
-		registros = Registro.objects.all()
+		registros = Registro.objects.filter(usuario__id=id_user)
 			# id_user = request.GET['usuario']
 			# user = User.objects.get(id=id_user)
-		ctx = {'registros': registros}
-
-		return render_to_response('registro/registroDiario.html', ctx, context_instance=RequestContext(request))
-
+		data = serializers.serialize('json', registros,
+	 					fields=('fecha','ganancia','gasto','nota'))
+		return HttpResponse(data)
+#Modificar Ganancias y Gastos
 class ModificarRegistro(CreateView):
 
 	def post(self, request, *args, **kwargs):
@@ -57,7 +61,7 @@ class ModificarRegistro(CreateView):
 	 	data = serializers.serialize('json', registros,
 	 					fields=('fecha','ganancia','gasto','nota'))
 		return HttpResponse(data)
-
+# Eliminar Ganancia y Gastos
 class EliminarRegistro(CreateView):
 
 	def post(self, request, *args, **kwargs):
@@ -83,12 +87,11 @@ class VerGanancias(ListView):
 		#user = User.objects.get(id=id_user)
 		id_user = request.user.id
 		#print id_user
-	  	ganancia = Registro.objects.filter(usuario__id=id_user).aggregate(Sum('ganancia'))
-	  	gasto = Registro.objects.filter(usuario__id=id_user).aggregate(Sum('gasto'))
-
-	 	ctx = {'registros': registros,'ganancia':ganancia, 'gasto':gasto}
+	  	ganancia = Registro.objects.filter(usuario__id=id_user).aggregate(Sum('ganancia')).values()[0]
+	  
+	 	ctx = {'registros': registros, 'ganancia': ganancia}
 	 	return render_to_response('registro/verGanancias.html', ctx, context_instance=RequestContext(request))
-
+    
 class VerGastos(ListView):
 	template_name = 'registro/verGastos.html'
 	#model = Registro
@@ -101,7 +104,6 @@ class VerGastos(ListView):
 		#print 
 		id_user = request.user.id
 
-	  	ganancia = Registro.objects.filter(usuario__id=id_user).aggregate(Sum('ganancia'))
-	  	gasto = Registro.objects.filter(usuario__id=id_user).aggregate(Sum('gasto'))
-	 	ctx = {'registros': registros,'ganancia':ganancia, 'gasto':gasto}
+	  	gasto = Registro.objects.filter(usuario__id=id_user).aggregate(Sum('gasto')).values()[0]
+	 	ctx = {'registros': registros, 'gasto': gasto}
 	 	return render_to_response('registro/verGastos.html', ctx, context_instance=RequestContext(request))

@@ -13,7 +13,9 @@
 {% endblock %}
 
 {% block contenido %}
-	<style type="text/css">body { padding-top: 10px; } #idregistro{display: none;}</style>
+	<style type="text/css">body { padding-top: 10px; } #idregistro{display: none;}
+		#ocultoGanancia{display: none;} #ocultoGasto{display: none;}
+	</style>
 	<h2 id="titulos">GANANCIAS Y GASTOS</h2>
 	<!-- Nota Rapida -->
 	<article id="botonesRapidos" class="col-md-3 col-sm-3">
@@ -65,19 +67,19 @@
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Fecha:</label>
 							<div class="col-sm-10 col-md-9">
-								<input type="date" name="fecha" class="form-control" id="fecha" required >
+								<input type="date" name="fecha" class="form-control" id="fecha">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Ganancias:</label>
 							<div class="col-sm-10 col-md-9">
-								<input type="text" name="ganancia" class="form-control" value='0'>
+								<input type="text" name="ganancia" class="form-control" id="valorGanancia" value='0'>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Gasto:</label>
 							<div class="col-sm-10 col-md-9">
-								<input type="text" name="gasto" class="form-control" value='0'>
+								<input type="text" name="gasto" class="form-control" id="valorGasto" value='0'>
 							</div>
 						</div>
 						<div class="form-group">
@@ -190,19 +192,29 @@
 {% block contenidomedio %}
 	<aside id="mensajeExitoso"></aside>
 	<aside id="mensajeEditado"></aside>
-	<article class="col-md-6 col-sm-6">
-		<div class="panel panel-success">
-			<div class="panel-heading"><h3>Ganancias Acumuladas</h3></div>
+	<article class="col-md-4 col-sm-4">
+		<div class="panel panel-info">
+			<div class="panel-heading"><h3>Total Actual</h3></div>
 			<div class="panel-body">
-				<h2>{{ganancia}}</h2>
+				<h2 id="totalActual"></h2>
 			</div>
 		</div>
 	</article>
-	<article class="col-md-6 col-sm-6">
+	<article class="col-md-4 col-sm-4">
+		<div class="panel panel-success">
+			<div class="panel-heading"><h3>Ganancias Acumuladas</h3></div>
+			<div class="panel-body">
+				<h2 id="valorNumerico">{{ganancia}}</h2>
+				<h2 id="ocultoGanancia">{{ganancia}}</h2>
+			</div>
+		</div>
+	</article>
+	<article class="col-md-4 col-sm-4">
 		<div class="panel panel-danger">
 			<div class="panel-heading"><h3>Gastos Acumulados</h3></div>
 			<div class="panel-body">
-				<h2>{{gasto}}</h2>
+				<h2 id="valorNumerico2">{{gasto}}</h2>
+				<h2 id="ocultoGasto">{{gasto}}</h2>
 			</div>
 		</div>
 	</article>
@@ -313,7 +325,7 @@
 				     <div class="modal-body">
 				          <label for="">Estas Seguro de Eliminar, <span id="titulo_eliminar"></span></label>
 				      </div>
-				      <input type="text" id="id_eliminar" name="id_eliminar">
+				      <input type="hidden" id="id_eliminar" name="id_eliminar">
 				      <!-- <input type="hidden" name='usuario' value='{{user.id}}'> -->
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -323,4 +335,20 @@
 		    </div>
 		</div>
 	</div>
+<!-- 
+<div class="pagination">
+    <span class="step-links">
+        {% if pagination.has_previous %}
+            <a href="?page={{ pagination.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ pagination.number }} of {{ pagination.paginator.num_pages }}.
+        </span>
+
+        {% if pagination.has_next %}
+            <a href="?page={{ pagination.next_page_number }}">next</a>
+        {% endif %}pagination
+    </span>
+</div> -->
 {% endblock %}

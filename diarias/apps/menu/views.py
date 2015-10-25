@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.db.models import Count, Min, Sum, Avg, Max
 from django.core import serializers
 from django.http import HttpResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import datetime
 
 class AgregarAjax(CreateView,TemplateView):
@@ -44,11 +45,23 @@ class Menu(ListView,CreateView):
 	def get(self, request, *args, **kwargs):
 		registros = Registro()
 		registros = Registro.objects.all()
+		# paginator = Paginator(registros, 5)
+		#page = request.GET.get('page')
+	    # try:
+	    #    pagination = paginator.page(page)
+	    # except PageNotAnInteger:
+	    #     # If page is not an integer, deliver first page.
+	    #     pagination = paginator.page(1)
+	    # except EmptyPage:
+	    #     # If page is out of range (e.g. 9999), deliver last page of results.
+	    #     pagination = paginator.page(paginator.num_pages)
 		#print request.user.id
 		id_user = request.user.id
 		# id_user = request.GET['usuario']
 		# user = User.objects.get(id=id_user)
-		ganancia = Registro.objects.filter(usuario__id=id_user).aggregate(Sum('ganancia'))
-	  	gasto = Registro.objects.filter(usuario__id=id_user).aggregate(Sum('gasto'))
+		ganancia = Registro.objects.filter(usuario__id=id_user).aggregate(Sum('ganancia')).values()[0]
+	  	gasto = Registro.objects.filter(usuario__id=id_user).aggregate(Sum('gasto')).values()[0]
+	  	paginate_by = 3
 		ctx = {'registros': registros, 'ganancia':ganancia, 'gasto':gasto}
+
 		return render_to_response('menu/menu.html',ctx, context_instance=RequestContext(request))
