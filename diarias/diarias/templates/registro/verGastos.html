@@ -14,23 +14,36 @@
 
 {% block contenido %}
 <style> #idregistro{display: none;}</style>
-	<div class="col-lg-6" id="buscador">
-	    <div class="input-group">
-	      <input type="text" class="form-control" placeholder="Buscar" autofocus>
-	      <span class="input-group-btn">
-	        <button class="btn btn-default" type="button">Buscar</button>
-	      </span>
-	    </div><!-- /input-group -->
-	</div><!-- /.col-lg-6 -->
 	<!-- <hr></hr> -->
-	<aside id="mensajeEditado"></aside>
+{% endblock %}
+
+{% block contenidomedio %}
 	<article class="col-md-12">
 		<div class="panel panel-danger">
 			<div class="panel-heading"><h3>Gastos Acumulados</h3></div>
-			<div class="panel-body">
-				<h2 id="valorNumerico">{{gasto}}</h2>
-			</div>
+				<div class="panel-body">
+					<h2 id="valorNumerico">{{gasto}}</h2>
+				</div>
 		</div>
+	</article>
+{% endblock %}
+
+{% block segundocontenido %}
+	<aside id="mensajeEditado"></aside>
+	<article class="col-md-12">
+		<div class="col-lg-6" id="buscador">
+		    <div class="input-group">
+		      <input type="text" class="form-control" id="buscar" placeholder="Buscar" autofocus>
+		      <span class="input-group-btn">
+		        <button class="btn btn-default" type="button">Buscar</button>
+		      </span>
+		    </div><!-- /input-group -->
+		</div><!-- /.col-lg-6 -->
+	</article>
+	<div id="cajaArriba">	
+		<a href="#" class="btn btn-default btn-lg" id="arriba" ><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
+	</div>
+	<article class="col-md-12">
 		<div class="table-responsive panel panel-primary">
 			<div class="panel-heading"><h4>Gastos</h4></div>	
 			<div class="panel-body">
@@ -46,8 +59,8 @@
 					</tr>
 				</thead>
 				<tbody id="FechaGasto">
-					{% for registro in registros %}
-						{% if registro.usuario == user %}
+					{% for registro in datos %}
+						<!-- {% if registro.usuario == user %} -->
 							{% if registro.gasto > 0 %}
 								<tr>
 									<td id="idregistro">{{registro.id}}</td>
@@ -59,13 +72,29 @@
 									<td><a href=""  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminar" id="eliminarGasto"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar</a></td>
 								</tr>
 							{% endif %}
-						{% endif %}
+						<!-- {% endif %} -->
 					{% endfor %}
 				</tbody>
 			</table>
+				<nav class="pagination">
+				    <span class="step-links">
+				        {% if datos.has_previous %}
+				            <a href="?page={{ datos.previous_page_number }}">previous</a>
+				        {% endif %}
+
+				        <span class="current">
+				            Page {{ datos.number }} of {{ datos.paginator.num_pages }}.
+				        </span>
+
+				        {% if datos.has_next %}
+				            <a href="?page={{ datos.next_page_number }}">next</a>
+				        {% endif %}datos
+				    </span>
+				</nav>
 			</div>
 		</div>
 	</article>
+
 <!-- Modificair el registro modal -->
 	<div class="modal fade" id="modificar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
 		<div class="modal-dialog" role="document">

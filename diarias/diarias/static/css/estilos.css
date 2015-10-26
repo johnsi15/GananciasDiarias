@@ -81,3 +81,13 @@
   z-index: 1;
   width: 85%;
 }
+
+.movimientoArriba{
+    position: fixed;
+    z-index: 1;
+    margin-left: 85%;
+    top: 40%;
+    padding-top: 25px;
+    line-height: 20px;
+    width: 140px;
+}

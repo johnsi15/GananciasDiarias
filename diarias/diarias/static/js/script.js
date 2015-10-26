@@ -119,7 +119,6 @@ $(document).ready(function(){
                   var gasto = $('#valorGasto').val();//gasto
                   var valor = $('#ocultoGanancia').text();//ganancia 
                   var valor2 = $('#ocultoGasto').text();//gasto
-                  $('#agregar_gananciaygasto_form')[0].reset();//borramos los datos del form 
                   $('#ventana1').modal('hide')//ocultamos el modal 
                   /*$('#FechaGananciasGastos').empty();//limpiamos la tabla */
                   var html = "";
@@ -137,6 +136,7 @@ $(document).ready(function(){
                   $('#valorNumerico').text(formatNumber.new(sumaGanancias, "$"));
                   $('#valorNumerico2').text(formatNumber.new(sumaGastos, "$"));
                   $('#totalActual').text(formatNumber.new(totalActual, "$"));
+                  $('#agregar_gananciaygasto_form')[0].reset();//borramos los datos del form 
                   for (var i = 0; i < datos.length; i++) {
                      /* console.log(datos[i].pk);*/
                      //console.log(datos[i].fields.fecha);
@@ -184,11 +184,10 @@ $(document).ready(function(){
                 if(data == "Error"){
                    console.log('Algo salio mal :(')
                 }else{
-                  var ganancia = $('#valorGanancia').val();//ganancia
-                  var gasto = $('#valorGasto').val();//gasto
+                  var ganancia = $('#valorGanancia2').val();//ganancia
+                  var gasto = $('#valorGasto2').val();//gasto
                   var valor = $('#ocultoGanancia').text();//ganancia 
                   var valor2 = $('#ocultoGasto').text();//gasto
-                  $('#agregar_ganancia_form')[0].reset();//borramos los datos del form 
                   $('#ventana2').modal('hide')//ocultamos el modal 
                   /*$('#FechaGananciasGastos').empty();//limpiamos la tabla */
                   var html = "";
@@ -206,6 +205,7 @@ $(document).ready(function(){
                   $('#valorNumerico').text(formatNumber.new(sumaGanancias, "$"));
                   $('#valorNumerico2').text(formatNumber.new(sumaGastos, "$"));
                   $('#totalActual').text(formatNumber.new(totalActual, "$"));
+                  $('#agregar_ganancia_form')[0].reset();//borramos los datos del form 
                   for (var i = 0; i < datos.length; i++) {
                      /* console.log(datos[i].pk);*/
                      //console.log(datos[i].fields.fecha);
@@ -253,11 +253,10 @@ $(document).ready(function(){
                 if(data == "Error"){
                   console.log('Algo salio mal :(')
                 }else{
-                  var ganancia = $('#valorGanancia').val();//ganancia
-                  var gasto = $('#valorGasto').val();//gasto
-                  var valor = $('#ocultoGanancia').text();//ganancia 
-                  var valor2 = $('#ocultoGasto').text();//gasto
-                  $('#agregar_gasto_form')[0].reset();//borramos los datos del form 
+                  var ganancia = $('#valorGanancia3').val();//ganancia
+                  var gasto = $('#valorGasto3').val();//gasto
+                  var valor = $('#ocultoGanancia').text();//ganancia oculta
+                  var valor2 = $('#ocultoGasto').text();//gasto oculto
                   $('#ventana3').modal('hide')//ocultamos el modal 
                   /* $('#FechaGananciasGastos').empty();//limpiamos la tabla */
                   var html = "";
@@ -275,6 +274,7 @@ $(document).ready(function(){
                   $('#valorNumerico').text(formatNumber.new(sumaGanancias, "$"));
                   $('#valorNumerico2').text(formatNumber.new(sumaGastos, "$"));
                   $('#totalActual').text(formatNumber.new(totalActual, "$"));
+                  $('#agregar_gasto_form')[0].reset();//borramos los datos del form 
                   for (var i = 0; i < datos.length; i++) {
                      /* console.log(datos[i].pk);*/
                      //console.log(datos[i].fields.fecha);
@@ -333,7 +333,7 @@ $(document).ready(function(){
               beforeSend: function(){
 
               },
-              url: '/ver-notas-rapidas/',
+              url: '/modificarNota/',
               type: 'POST',
               data: $('#modificar_nota_form').serialize(),
               success: function(data){
@@ -479,7 +479,7 @@ $('#clickModificarRegistro').click(function(e){
                   console.log('Algo salio mal :(')
                 }else{
                  //$('#modificar_nota_form')[0].reset();//borramos los datos del form 
-                 $('#modificar').modal('hide')//ocultamos el modal 
+                $('#modificar').modal('hide')//ocultamos el modal 
                 /* $('#FechaTituloNota').empty();//limpiamos la tabla */
                   var html = "";
                   var datos = JSON.parse(data);
@@ -852,5 +852,26 @@ $('#clickEliminarGasto').click(function(e){
 });/*Cierre de la funtion click*/
 
 
+$('#arriba').click(function () {
+        $('html, body').animate({
+               scrollTop: '0px'
+        },
+        1000);
+        $('#buscar').focus();
+});
+
+var boton = $('#cajaArriba');
+var boton_offset = boton.offset();
+    boton.css("display", "none");
+
+$(window).on('scroll', function() {
+    if($(window).scrollTop() > boton_offset.top) {
+        boton.addClass('movimientoArriba');
+        boton.css("display", "block");
+    } else {
+        boton.removeClass('movimientoArriba');
+        boton.css("display", "none");
+    }
+});
 
 });/*Cierre del document*/

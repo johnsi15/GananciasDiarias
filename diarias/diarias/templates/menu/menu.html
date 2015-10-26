@@ -121,10 +121,10 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Ganancias:</label>
 								<div class="col-sm-10 col-md-9">
-									<input type="text" name="ganancia" class="form-control" value='0'>
+									<input type="text" name="ganancia" class="form-control" id="valorGanancia2" value='0'>
 								</div>
 							</div>
-							<input type="hidden" name="gasto"  value='0'>
+							<input type="hidden" name="gasto" id="valorGasto2" value='0'>
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Nota:</label>
 								<div class="col-sm-10 col-md-9">
@@ -162,11 +162,11 @@
 									<input type="date" name="fecha" class="form-control" id="fecha_gasto" required>
 								</div>
 							</div>
-							<input type="hidden" name="ganancia" value='0'>
+							<input type="hidden" name="ganancia" id="valorGanancia3" value='0'>
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Gasto:</label>
 								<div class="col-sm-10 col-md-9">
-									<input type="text" name="gasto" class="form-control" value='0'>
+									<input type="text" name="gasto" class="form-control" id="valorGasto3" value='0'>
 								</div>
 							</div>
 							<div class="form-group">
@@ -223,13 +223,16 @@
 {% block segundocontenido %}
 	<div class="col-lg-6" id="buscador">
 	    <div class="input-group">
-	      <input type="text" class="form-control" placeholder="Buscar">
+	      <input type="text" class="form-control" id="buscar" placeholder="Buscar">
 	      <span class="input-group-btn">
-	        <button class="btn btn-default" type="button">Buscar</button>
+	        <button class="btn btn-default" type="button" >Buscar</button>
 	      </span>
 	    </div><!-- /input-group -->
 	</div><!-- /.col-lg-6 -->
 <!-- 	<hr></hr> -->
+<div id="cajaArriba">	
+	<a href="#" class="btn btn-default btn-lg" id="arriba" ><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
+</div>
 <!-- Tabla de las ganancias y los gastos modificar e eliminar -->
 	<article class="col-md-12">
 		<div class="table-responsive panel panel-primary">
@@ -247,8 +250,8 @@
 					</tr>
 				</thead>
 				<tbody id="FechaGananciasGastos">
-					{% for registro in registros %}
-						{% if registro.usuario == user %}
+					{% for registro in datos %}
+						<!-- {% if registro.usuario == user %} -->
 							<tr>
 								<td id="idregistro">{{registro.id}}</td>
 								<td>{{registro.fecha|date:"Y-m-d"}}</td> <!-- |date:'d F Y' -->
@@ -258,10 +261,25 @@
 								<td><a href=""  class="btn btn-info btn-sm" data-toggle="modal" data-target="#modificar" id="modificarRegistro"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar</a></td>
 								<td><a href=""  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminar" id="eliminarRegistro"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar</a></td>
 							</tr>
-						{% endif %}
+						<!-- {% endif %} -->
 					{% endfor %}
 				</tbody>
 			</table>
+				<nav class="pagination">
+				    <span class="step-links">
+				        {% if datos.has_previous %}
+				            <a href="?page={{ datos.previous_page_number }}">previous</a>
+				        {% endif %}
+
+				        <span class="current">
+				            Page {{ datos.number }} of {{ datos.paginator.num_pages }}.
+				        </span>
+
+				        {% if datos.has_next %}
+				            <a href="?page={{ datos.next_page_number }}">next</a>
+				        {% endif %}datos
+				    </span>
+				</nav>
 			</div>
 		</div>
 	</article>
@@ -335,20 +353,4 @@
 		    </div>
 		</div>
 	</div>
-<!-- 
-<div class="pagination">
-    <span class="step-links">
-        {% if pagination.has_previous %}
-            <a href="?page={{ pagination.previous_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
-            Page {{ pagination.number }} of {{ pagination.paginator.num_pages }}.
-        </span>
-
-        {% if pagination.has_next %}
-            <a href="?page={{ pagination.next_page_number }}">next</a>
-        {% endif %}pagination
-    </span>
-</div> -->
 {% endblock %}

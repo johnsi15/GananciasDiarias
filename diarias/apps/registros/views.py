@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.db.models import Count, Min, Sum, Avg, Max
 from django.core import serializers
 from django.http import HttpResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import datetime
 # Agregar Ganancias y Gastos.
 class AgregarRegistro(CreateView):
@@ -28,13 +29,17 @@ class AgregarRegistro(CreateView):
 		registro.gasto = request.POST['gasto']
 		registro.nota = request.POST['nota']
 		registro.usuario = user
-
 		registro.save()
+		datos = Registro.objects.filter(usuario__id=id_user).order_by('-fecha')
+		paginator = Paginator(datos, 10)
+		page = request.GET.get('page','1')
+		try:datos = paginator.page(page )
+		except PageNotAnInteger:
+		 	datos = paginator.page(1)
+		except EmptyPage:
+	 		datos = paginator.page(paginator.num_pages)
 
-		registros = Registro.objects.filter(usuario__id=id_user)
-			# id_user = request.GET['usuario']
-			# user = User.objects.get(id=id_user)
-		data = serializers.serialize('json', registros,
+		data = serializers.serialize('json', datos,
 	 					fields=('fecha','ganancia','gasto','nota'))
 		return HttpResponse(data)
 #Modificar Ganancias y Gastos
@@ -57,8 +62,16 @@ class ModificarRegistro(CreateView):
 		r.ganancia = ganancia
 		r.gasto = gasto 
 		r.save()
-		registros = Registro.objects.filter(usuario__id=id_user) 
-	 	data = serializers.serialize('json', registros,
+		datos = Registro.objects.filter(usuario__id=id_user).order_by('-fecha')
+		paginator = Paginator(datos, 10)
+		page = request.GET.get('page','1')
+		try:datos = paginator.page(page )
+		except PageNotAnInteger:
+		 	datos = paginator.page(1)
+		except EmptyPage:
+	 		datos = paginator.page(paginator.num_pages)
+
+	 	data = serializers.serialize('json', datos,
 	 					fields=('fecha','ganancia','gasto','nota'))
 		return HttpResponse(data)
 # Eliminar Ganancia y Gastos
@@ -71,8 +84,16 @@ class EliminarRegistro(CreateView):
 		id_user = request.user.id  #traemos el id del usuario
 		r = Registro.objects.get(id=id_r)
 		r.delete()
-		registros = Registro.objects.filter(usuario__id=id_user) 
-		data = serializers.serialize('json', registros,
+		datos = Registro.objects.filter(usuario__id=id_user).order_by('-fecha')
+		paginator = Paginator(datos, 10)
+		page = request.GET.get('page','1')
+		try:datos = paginator.page(page )
+		except PageNotAnInteger:
+		 	datos = paginator.page(1)
+		except EmptyPage:
+	 		datos = paginator.page(paginator.num_pages) 
+
+		data = serializers.serialize('json', datos,
 	 					fields=('fecha','ganancia','gasto','nota'))
 		return HttpResponse(data)
 
@@ -82,14 +103,19 @@ class VerGanancias(ListView):
 	#context_object_name = "registros"
 
 	def get(self, request,*args, **kwargs):
-		registros = Registro()
-		registros = Registro.objects.all()
-		#user = User.objects.get(id=id_user)
 		id_user = request.user.id
-		#print id_user
+		datos = Registro.objects.filter(usuario__id=id_user).order_by('-fecha')
+		paginator = Paginator(datos, 10)
+		page = request.GET.get('page','1')
+		try:datos = paginator.page(page )
+		except PageNotAnInteger:
+		 	datos = paginator.page(1)
+		except EmptyPage:
+	 		datos = paginator.page(paginator.num_pages)
+
 	  	ganancia = Registro.objects.filter(usuario__id=id_user).aggregate(Sum('ganancia')).values()[0]
 	  
-	 	ctx = {'registros': registros, 'ganancia': ganancia}
+	 	ctx = {'datos': datos, 'ganancia': ganancia}
 	 	return render_to_response('registro/verGanancias.html', ctx, context_instance=RequestContext(request))
     
 class VerGastos(ListView):
@@ -98,12 +124,17 @@ class VerGastos(ListView):
 	#context_object_name = "registros"	
 
 	def get(self, request,*args, **kwargs):
-		registros = Registro()
-		registros = Registro.objects.all()
-		#user = User.objects.get(id=id_user)
-		#print 
 		id_user = request.user.id
+		datos = Registro.objects.filter(usuario__id=id_user).order_by('-fecha')
+		paginator = Paginator(datos, 10)
+		page = request.GET.get('page','1')
+		try:datos = paginator.page(page )
+		except PageNotAnInteger:
+		 	datos = paginator.page(1)
+		except EmptyPage:
+	 		datos = paginator.page(paginator.num_pages)
 
 	  	gasto = Registro.objects.filter(usuario__id=id_user).aggregate(Sum('gasto')).values()[0]
-	 	ctx = {'registros': registros, 'gasto': gasto}
+	  	
+	 	ctx = {'datos': datos, 'gasto': gasto}
 	 	return render_to_response('registro/verGastos.html', ctx, context_instance=RequestContext(request))
