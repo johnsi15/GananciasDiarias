@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block titulo %}Reportes{% endblock  %}
+
+{% block header %}
+	<!-- <h2 id="perfil">MI PERFIL</h2> -->
+	<div id="imagen_perfil">
+		<img id="img-perfil" src="{{STATIC_URL}}img/reporte.jpg">
+	</div>
+{% endblock  %}
+
+{% block contenido %}
+<div id="cajaArriba" style="display: none;"></div>
+	
+	<article class="col-md-4 col-sm-4">
+		<div class="panel panel-info">
+			<div class="panel-heading"><h3>Total Actual</h3></div>
+			<div class="panel-body">
+				<h2 id="totalActual"></h2>
+			</div>
+		</div>
+	</article>
+	<article class="col-md-4 col-sm-4">
+		<div class="panel panel-success">
+			<div class="panel-heading"><h3>Ganancias Acumuladas</h3></div>
+			<div class="panel-body">
+				<h2 id="valorNumerico">{{ganancia}}</h2>
+				<h2 id="ocultoGanancia">{{ganancia}}</h2>
+			</div>
+		</div>
+	</article>
+	<article class="col-md-4 col-sm-4">
+		<div class="panel panel-danger">
+			<div class="panel-heading"><h3>Gastos Acumulados</h3></div>
+			<div class="panel-body">
+				<h2 id="valorNumerico2">{{gasto}}</h2>
+				<h2 id="ocultoGasto">{{gasto}}</h2>
+			</div>
+		</div>
+	</article>
+{% endblock %}

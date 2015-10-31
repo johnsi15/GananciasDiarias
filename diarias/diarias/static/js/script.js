@@ -155,6 +155,21 @@ $(document).ready(function(){
                    var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+
                    'X'+'</button>'+'<strong>'+'Ganancia Y Gasto '+'</strong>'+' La Ganancia y el Gasto se Guardo Correctamente.'+'</div>';
                    $('#mensajeExitoso').html(exito);//mensaje de exito
+                   /*Volvemos a mandar el codigo de paginacion porque se desactiva cunado terminamos de hacerlo la primera vez*/
+                  var paginacion = '<nav class="pagination" style="display: none;">'+
+                                      '<span class="step-links">'+
+                                          '{% if datos.has_previous %}'+
+                                              '<a href="?page={{ datos.previous_page_number }}">previous</a>'+
+                                          '{% endif %}'+
+                                          '<span class="current">'+
+                                              'Page {{ datos.number }} of {{ datos.paginator.num_pages }}.'+
+                                          '</span>'+
+                                          '{% if datos.has_next %}'+
+                                              '<a id="siguiente" href="?page=2">next</a>'+
+                                          '{% endif %}datos'+
+                                      '</span>'+
+                                  '</nav>';
+                  $('#pag').html(paginacion);
                 }
               },
               error: function(jqXHR,estado,error){
@@ -224,6 +239,21 @@ $(document).ready(function(){
                    var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+
                    'X'+'</button>'+'<strong>'+'Ganancia'+'</strong>'+' La Ganancia se Guardo Correctamente.'+'</div>';
                    $('#mensajeExitoso').html(exito);//mensaje de exito
+                   /*Volvemos a mandar el codigo de paginacion porque se desactiva cunado terminamos de hacerlo la primera vez*/
+                  var paginacion = '<nav class="pagination" style="display: none;">'+
+                                      '<span class="step-links">'+
+                                          '{% if datos.has_previous %}'+
+                                              '<a href="?page={{ datos.previous_page_number }}">previous</a>'+
+                                          '{% endif %}'+
+                                          '<span class="current">'+
+                                              'Page {{ datos.number }} of {{ datos.paginator.num_pages }}.'+
+                                          '</span>'+
+                                          '{% if datos.has_next %}'+
+                                              '<a id="siguiente" href="?page=2">next</a>'+
+                                          '{% endif %}datos'+
+                                      '</span>'+
+                                  '</nav>';
+                  $('#pag').html(paginacion);
                 }
               },
               error: function(jqXHR,estado,error){
@@ -293,6 +323,21 @@ $(document).ready(function(){
                    var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+
                    'X'+'</button>'+'<strong>'+'Gasto'+'</strong>'+' El Gasto se Guardo Correctamente.'+'</div>';
                   $('#mensajeExitoso').html(exito);//mensaje de exito
+                  /*Volvemos a mandar el codigo de paginacion porque se desactiva cunado terminamos de hacerlo la primera vez*/
+                  var paginacion = '<nav class="pagination" style="display: none;">'+
+                                      '<span class="step-links">'+
+                                          '{% if datos.has_previous %}'+
+                                              '<a href="?page={{ datos.previous_page_number }}">previous</a>'+
+                                          '{% endif %}'+
+                                          '<span class="current">'+
+                                              'Page {{ datos.number }} of {{ datos.paginator.num_pages }}.'+
+                                          '</span>'+
+                                          '{% if datos.has_next %}'+
+                                              '<a id="siguiente" href="?page=2">next</a>'+
+                                          '{% endif %}datos'+
+                                      '</span>'+
+                                  '</nav>';
+                  $('#pag').html(paginacion);
                 }
               },
               error: function(jqXHR,estado,error){
@@ -502,6 +547,21 @@ $('#clickModificarRegistro').click(function(e){
                    var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+
                    'X'+'</button>'+'<strong>'+'Editado'+'</strong>'+' El registro se modifico correctamente.'+'</div>';
                   $('#mensajeEditado').html(exito);//mensaje de exito
+                  /*Volvemos a mandar el codigo de paginacion porque se desactiva cunado terminamos de hacerlo la primera vez*/
+                  var paginacion = '<nav class="pagination" style="display: none;">'+
+                                      '<span class="step-links">'+
+                                          '{% if datos.has_previous %}'+
+                                              '<a href="?page={{ datos.previous_page_number }}">previous</a>'+
+                                          '{% endif %}'+
+                                          '<span class="current">'+
+                                              'Page {{ datos.number }} of {{ datos.paginator.num_pages }}.'+
+                                          '</span>'+
+                                          '{% if datos.has_next %}'+
+                                              '<a id="siguiente" href="?page=2">next</a>'+
+                                          '{% endif %}datos'+
+                                      '</span>'+
+                                  '</nav>';
+                  $('#pag').html(paginacion);
                 }
               },
               error: function(jqXHR,estado,error){
@@ -566,6 +626,15 @@ $('#clickEliminarRegistro').click(function(e){
                    var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+
                    'X'+'</button>'+'<strong>'+'Eliminado'+'</strong>'+' El registro se elimino correctamente.'+'</div>';
                   $('#mensajeEditado').html(exito);//mensaje de exito
+                  /*Volvemos a mandar el codigo de paginacion porque se desactiva cunado terminamos de hacerlo la primera vez*/
+                  var paginacion = '<nav class="pagination" style="display: none;">'+
+                                      '<span class="step-links">'+
+                                          '{% if datos.has_next %}'+
+                                              '<a id="siguiente" href="?page=2">next</a>'+
+                                          '{% endif %}datos'+
+                                      '</span>'+
+                                  '</nav>';
+                  $('#pag').html(paginacion);
                 }
               },
               error: function(jqXHR,estado,error){
@@ -615,11 +684,12 @@ $('#clickModificarGanancia').click(function(e){
                 /* $('#FechaTituloNota').empty();//limpiamos la tabla */
                   var html = "";
                   var datos = JSON.parse(data);
-                    //console.log(datos);
+                  //console.log('ganancia modificada');
+                  var contador=0;
                   for (var i = 0; i < datos.length; i++) {
                      /* console.log(datos[i].pk);*/
                      //console.log(datos[i].fields.fecha);
-                     if (datos[i].fields.ganancia > 0 && datos[i].fields.gasto >= 0){
+                     if(datos[i].fields.ganancia > 0){
                        html +='<tr><td id="idregistro">'+
                                           datos[i].pk+'</td><td>'+
                                           datos[i].fields.fecha+'</td><td>'+
@@ -628,14 +698,23 @@ $('#clickModificarGanancia').click(function(e){
                                           datos[i].fields.nota+'</td>'+
                           '<td><a href=""  class="btn btn-info btn-sm" data-toggle="modal" data-target="#modificar" id="modificarGanancia"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar</a></td>'+
                           '<td><a href=""  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminar" id="eliminarGanancia"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar</a></td>'+
-                       '</tr>'
+                       '</tr>';
                      };
-                  };                  
+                  };                 
                   $('#FechaGanancia').html(html);//mandamos los nuevos datos a la tabla
                     setTimeout(function(){ $("#mensajeEditado .alert").fadeOut(6000).fadeIn(3000).fadeOut(900).fadeIn(800).fadeOut(600);}, 800); 
                    var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+
                    'X'+'</button>'+'<strong>'+'Editado'+'</strong>'+' El registro se modifico correctamente.'+'</div>';
                   $('#mensajeEditado').html(exito);//mensaje de exito
+                  /*Volvemos a mandar el codigo de paginacion porque se desactiva cunado terminamos de hacerlo la primera vez*/
+                  var paginacion = '<nav class="pagination" style="display: none;">'+
+                                      '<span class="step-links">'+
+                                          '{% if datos.has_next %}'+
+                                              '<a id="siguiente" href="?page=2">next</a>'+
+                                          '{% endif %}datos'+
+                                      '</span>'+
+                                  '</nav>';
+                  $('#pag').html(paginacion);
                 }
               },
               error: function(jqXHR,estado,error){
@@ -685,7 +764,7 @@ $('#clickEliminarGanancia').click(function(e){
                   for (var i = 0; i < datos.length; i++) {
                      /* console.log(datos[i].pk);*/
                      //console.log(datos[i].fields.fecha);
-                     if (datos[i].fields.ganancia > 0 && datos[i].fields.gasto >= 0){
+                     if (datos[i].fields.ganancia > 0 ){
                        html +='<tr><td id="idregistro">'+
                                           datos[i].pk+'</td><td>'+
                                           datos[i].fields.fecha+'</td><td>'+
@@ -694,14 +773,29 @@ $('#clickEliminarGanancia').click(function(e){
                                           datos[i].fields.nota+'</td>'+
                           '<td><a href=""  class="btn btn-info btn-sm" data-toggle="modal" data-target="#modificar" id="modificarGanancia"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar</a></td>'+
                           '<td><a href=""  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminar" id="eliminarGanancia"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar</a></td>'+
-                       '</tr>'
-                     };
+                       '</tr>';
+                      };
                   };                  
                   $('#FechaGanancia').html(html);//mandamos los nuevos datos a la tabla
                     setTimeout(function(){ $("#mensajeEditado .alert").fadeOut(6000).fadeIn(3000).fadeOut(900).fadeIn(800).fadeOut(600);}, 800); 
                    var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+
                    'X'+'</button>'+'<strong>'+'Eliminado'+'</strong>'+' El registro se elimino correctamente.'+'</div>';
                   $('#mensajeEditado').html(exito);//mensaje de exito
+                  /*Volvemos a mandar el codigo de paginacion porque se desactiva cunado terminamos de hacerlo la primera vez*/
+                  var paginacion = '<nav class="pagination" style="display: none;">'+
+                                      '<span class="step-links">'+
+                                          '{% if datos.has_previous %}'+
+                                              '<a href="?page={{ datos.previous_page_number }}">previous</a>'+
+                                          '{% endif %}'+
+                                          '<span class="current">'+
+                                              'Page {{ datos.number }} of {{ datos.paginator.num_pages }}.'+
+                                          '</span>'+
+                                          '{% if datos.has_next %}'+
+                                              '<a id="siguiente" href="?page=2">next</a>'+
+                                          '{% endif %}datos'+
+                                      '</span>'+
+                                  '</nav>';
+                  $('#pag').html(paginacion);
                 }
               },
               error: function(jqXHR,estado,error){
@@ -755,7 +849,7 @@ $('#clickModificarGasto').click(function(e){
                   for (var i = 0; i < datos.length; i++) {
                      /* console.log(datos[i].pk);*/
                      //console.log(datos[i].fields.fecha);
-                     if (datos[i].fields.gasto > 0){
+                    if (datos[i].fields.gasto > 0){
                        html +='<tr><td id="idregistro">'+
                                           datos[i].pk+'</td><td>'+
                                           datos[i].fields.fecha+'</td><td>'+
@@ -764,7 +858,7 @@ $('#clickModificarGasto').click(function(e){
                                           datos[i].fields.nota+'</td>'+
                           '<td><a href=""  class="btn btn-info btn-sm" data-toggle="modal" data-target="#modificar" id="modificarGasto"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar</a></td>'+
                           '<td><a href=""  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminar" id="eliminarGasto"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar</a></td>'+
-                       '</tr>'
+                       '</tr>';
                      };
                   };                  
                   $('#FechaGasto').html(html);//mandamos los nuevos datos a la tabla
@@ -772,6 +866,21 @@ $('#clickModificarGasto').click(function(e){
                    var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+
                    'X'+'</button>'+'<strong>'+'Editado'+'</strong>'+' El registro se modifico correctamente.'+'</div>';
                   $('#mensajeEditado').html(exito);//mensaje de exito
+                  /*Volvemos a mandar el codigo de paginacion porque se desactiva cunado terminamos de hacerlo la primera vez*/
+                  var paginacion = '<nav class="pagination" style="display: none;">'+
+                                      '<span class="step-links">'+
+                                          '{% if datos.has_previous %}'+
+                                              '<a href="?page={{ datos.previous_page_number }}">previous</a>'+
+                                          '{% endif %}'+
+                                          '<span class="current">'+
+                                              'Page {{ datos.number }} of {{ datos.paginator.num_pages }}.'+
+                                          '</span>'+
+                                          '{% if datos.has_next %}'+
+                                              '<a id="siguiente" href="?page=2">next</a>'+
+                                          '{% endif %}datos'+
+                                      '</span>'+
+                                  '</nav>';
+                  $('#pag').html(paginacion);
                 }
               },
               error: function(jqXHR,estado,error){
@@ -830,7 +939,7 @@ $('#clickEliminarGasto').click(function(e){
                                           datos[i].fields.nota+'</td>'+
                           '<td><a href=""  class="btn btn-info btn-sm" data-toggle="modal" data-target="#modificar" id="modificarGasto"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar</a></td>'+
                           '<td><a href=""  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminar" id="eliminarGasto"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar</a></td>'+
-                       '</tr>'
+                       '</tr>';
                      };
                   };                  
                   $('#FechaGasto').html(html);//mandamos los nuevos datos a la tabla
@@ -838,6 +947,21 @@ $('#clickEliminarGasto').click(function(e){
                    var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+
                    'X'+'</button>'+'<strong>'+'Eliminado'+'</strong>'+' El registro se elimino correctamente.'+'</div>';
                   $('#mensajeEditado').html(exito);//mensaje de exito
+                  /*Volvemos a mandar el codigo de paginacion porque se desactiva cunado terminamos de hacerlo la primera vez*/
+                  var paginacion = '<nav class="pagination" style="display: none;">'+
+                                      '<span class="step-links">'+
+                                          '{% if datos.has_previous %}'+
+                                              '<a href="?page={{ datos.previous_page_number }}">previous</a>'+
+                                          '{% endif %}'+
+                                          '<span class="current">'+
+                                              'Page {{ datos.number }} of {{ datos.paginator.num_pages }}.'+
+                                          '</span>'+
+                                          '{% if datos.has_next %}'+
+                                              '<a id="siguiente" href="?page=2">next</a>'+
+                                          '{% endif %}datos'+
+                                      '</span>'+
+                                  '</nav>';
+                  $('#pag').html(paginacion);
                 }
               },
               error: function(jqXHR,estado,error){
@@ -851,15 +975,16 @@ $('#clickEliminarGasto').click(function(e){
         });/*Cierre del ajax*/
 });/*Cierre de la funtion click*/
 
-
+/*click para volver arriba*/
 $('#arriba').click(function () {
         $('html, body').animate({
                scrollTop: '0px'
         },
-        1000);
+        600);
         $('#buscar').focus();
 });
 
+/* hacemos que aparesca el boton para volver arriba*/
 var boton = $('#cajaArriba');
 var boton_offset = boton.offset();
     boton.css("display", "none");
@@ -873,5 +998,34 @@ $(window).on('scroll', function() {
         boton.css("display", "none");
     }
 });
+/*---------------------------------------------------*/
+
+/*paginacion con scroll infinito*/
+$(window).scroll(function(){
+    if($(window).scrollTop() >= $(document).height() - $(window).height()){
+        if($('.pagination #siguiente').length){
+            $('#cargando').show();
+             /*_____________________________________*/
+          $.ajax({
+              type: 'GET',
+              url: $('.pagination #siguiente').attr('href'),
+              success: function(html){
+                  //console.log(html);
+                var nuevosRegistros = $(html).find('table tbody'),
+                  nuevaPag     = $(html).find('.pagination'),
+                  tabla        = $('table');
+                  tabla.find('tbody').append(nuevosRegistros.html());//agregamos los nuevos datos 
+                  tabla.after(nuevaPag.hide());
+                $('#cargando').hide();//ocultamos la img cargando
+                $('[data-toggle=popover]').popover({html:true});
+              }
+          });
+            $('.pagination').remove();//evitams que se vea la paginacion y no solo eso si no que no se repitan los datos
+        }
+    }
+});
+
+/*---------------------------------------------------------------------------------------*/
+
 
 });/*Cierre del document*/

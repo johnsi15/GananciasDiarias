@@ -9,6 +9,7 @@ from django.db.models import Count, Min, Sum, Avg, Max
 from django.core import serializers
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 import datetime
 
 class AgregarAjax(CreateView,TemplateView):
@@ -42,7 +43,7 @@ class AgregarAjax(CreateView,TemplateView):
 		#ctx = {'registros':registros}
 		#return render_to_response('notas/verNotas.html', ctx,  context_instance=RequestContext(request))
 
-class Menu(ListView,CreateView):
+class Menu(ListView):
 	template_name = 'menu/menu.html'
     #Redirect to a success page.
 	#model = Registro
@@ -50,8 +51,8 @@ class Menu(ListView,CreateView):
 	#success_url = reverse_lazy('menu')#redireccionamos depues de registrar 
 	def get(self, request, *args, **kwargs):
 		id_user = request.user.id
-		registros = Registro.objects.filter(usuario__id=id_user).order_by('-fecha')
-		paginator = Paginator(registros, 10)
+		datos = Registro.objects.filter(usuario__id=id_user).order_by('-fecha')
+		paginator = Paginator(datos, 10)
 		page = request.GET.get('page','1')
 		try:datos = paginator.page(page )
 		except PageNotAnInteger:
@@ -65,3 +66,57 @@ class Menu(ListView,CreateView):
 		ctx = {'datos': datos, 'ganancia':ganancia, 'gasto':gasto}
 
 		return render_to_response('menu/menu.html',ctx, context_instance=RequestContext(request))
+
+class BuscarGananciasGastos(TemplateView):
+
+	def get(self, request, *args, **kwargs):
+		id_user = request.user.id
+		palabra = request.GET['palabra']
+		#print palabra
+		if palabra == '':
+			busqueda = Registro.objects.filter(usuario__id=id_user).order_by('-fecha')
+			paginator = Paginator(busqueda, 10)
+			page = request.GET.get('page','1')
+			try:datos = paginator.page(page )
+			except PageNotAnInteger:
+			 	datos = paginator.page(1)
+			except EmptyPage:
+		 		datos = paginator.page(paginator.num_pages)
+
+			data = serializers.serialize('json', datos,
+			 					fields=('fecha','ganancia','gasto','nota'))
+			 	#print data
+			return HttpResponse(data)
+		else:
+			busqueda = Registro.objects.filter(usuario__id=id_user, fecha=palabra)
+			data = serializers.serialize('json', busqueda,
+			 					fields=('fecha','ganancia','gasto','nota'))
+			 	#print data
+			return HttpResponse(data)
+
+class BuscarNotas(TemplateView):
+
+	def get(self, request, *args, **kwargs):
+		id_user = request.user.id
+		palabra = request.GET['palabra']
+		#print palabra
+		if palabra == '':
+			busqueda = Notas.objects.filter(usuario__id=id_user).order_by('-fecha')
+			paginator = Paginator(busqueda, 10)
+			page = request.GET.get('page','1')
+			try:datos = paginator.page(page )
+			except PageNotAnInteger:
+			 	datos = paginator.page(1)
+			except EmptyPage:
+		 		datos = paginator.page(paginator.num_pages)
+
+			data = serializers.serialize('json', datos,
+	 					fields=('fecha','titulo','nota'))
+			return HttpResponse(data)
+		else:
+			busqueda = Notas.objects.filter(Q(titulo__contains=palabra) | Q(nota__contains=palabra),usuario__id=id_user)
+			
+		 	data = serializers.serialize('json', busqueda,
+	 					fields=('fecha','titulo','nota'))
+			return HttpResponse(data)
+				

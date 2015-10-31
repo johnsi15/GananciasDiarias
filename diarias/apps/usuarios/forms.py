@@ -12,7 +12,7 @@ class UserForm(UserCreationForm):
     telefono = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     correo = forms.CharField(
         max_length=50,
-        widget=forms.TextInput(attrs={'class': 'form-control'}))
+        widget=forms.TextInput(attrs={'class': 'form-control','type': 'email'}))
    
 
 class EditarPerfil(forms.Form):

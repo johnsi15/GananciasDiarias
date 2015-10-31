@@ -2,14 +2,18 @@
 
 {% block titulo %}Perfil{% endblock  %}
 
-{% block cabezera %}
-	<h2 id="titulos">MI PERFIL</h2>
+{% block header %}
+	<!-- <h2 id="perfil">MI PERFIL</h2> -->
+	<div id="imagen_perfil">
+		<img id="img-perfil" src="{{STATIC_URL}}img/perfil.jpg">
+	</div>
 {% endblock  %}
 
-{% block contenido %}
-	<hr></hr>
-	<article class="col-md-1"></article>
-	<article class="col-md-10">
+{% block perfil %}
+	<article class="col-md-1">
+		<div id="cajaArriba" style="display: none;"></div>	
+	</article>
+	<article id="perfil" class="col-md-10">
 		<ul class="nav nav-tabs nav-justified well">
   			<li role="presentation" class="active"><a href="/perfil">Perfil</a>
 				{% if user.perfiles.id == user.id%}

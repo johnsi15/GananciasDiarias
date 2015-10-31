@@ -38,6 +38,17 @@
   z-index: 1;
 }
 
+#img-perfil{
+  opacity: 1;
+  margin-top: 3%;
+  max-width: 100%;
+  height: auto;
+}
+
+#perfil{
+  margin-top: 5%;
+}
+
 #img-menu{
   width: 25%;
   height: 40px;
@@ -79,14 +90,19 @@
   float: left;
   position: fixed;
   z-index: 1;
-  width: 85%;
+  width: 83%;
+}
+
+#cargando{
+  width: 10%;
+  margin: 0 auto;
 }
 
 .movimientoArriba{
     position: fixed;
     z-index: 1;
     margin-left: 85%;
-    top: 40%;
+    top: 30%;
     padding-top: 25px;
     line-height: 20px;
     width: 140px;

@@ -31,12 +31,13 @@
 		        <li><a href="/menu">Inicio <span class="sr-only">(current)</span></a></li>
 		        <li><a href="/ver-ganancias/">Ingresos</a></li>
 		         <li><a href="/ver-gastos/">Gastos</a></li>
-		         <li><a href="#">Mensualidad</a></li>
+		         <li><a href="/reportes">Reportes</a></li>
 		        <li class="dropdown">
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-user "></i> {{user.username|capfirst}}<span class="caret"></span></a>
 		          <ul class="dropdown-menu">
-		          	<li><a href="#">Action</a></li>
-		            <li><a href="#">Another action</a></li>
+		          	<li class="divider"></li>
+		          	<!-- <li><a href="#">Action</a></li>
+		          			            <li><a href="#">Another action</a></li> -->
 		            <li><a href="/ver-notas-rapidas">Notas Rapidas</a></li>
 		            <li class="divider"></li>
 		            <li {% block etiquetaPerfil %}{% endblock %}><a href="/perfil">Perfil</a></li>
@@ -50,6 +51,7 @@
 		</nav>
 	</header>
 		<div class="container">
+			{% block perfil %}{% endblock %}
 			<section class="main row">
 				{% block cabezera %} {% endblock %}
 
