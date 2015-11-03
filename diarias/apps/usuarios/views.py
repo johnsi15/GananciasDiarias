@@ -6,6 +6,7 @@ from django.template import RequestContext
 from django.core.urlresolvers import reverse_lazy
 from .forms import UserForm,EditarPerfil,EditarContrasenaForm
 from .models import Perfiles
+from apps.menu.views import Menu
 from django.contrib.auth.hashers import make_password
 #from django.contrib.auth.models import User
 
@@ -13,7 +14,7 @@ from django.contrib.auth.hashers import make_password
 class NuevoUsuario(FormView):
     template_name = 'usuarios/nuevoUsuario.html'
     form_class = UserForm
-    success_url = reverse_lazy('/')
+    #success_url = HttpResponseRedirect('/menu')
 
     def form_valid(self, form):
         user = form.save()
@@ -24,7 +25,8 @@ class NuevoUsuario(FormView):
         perfil.telefono = form.cleaned_data['telefono']
         perfil.correo = form.cleaned_data['correo']
         perfil.save()
-        return super(NuevoUsuario, self).form_valid(form)
+        # return super(NuevoUsuario, self).form_valid(form)
+        return HttpResponseRedirect('/')
 
 @login_required()
 def Perfil(request):

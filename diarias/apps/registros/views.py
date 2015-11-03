@@ -8,6 +8,7 @@ from django.db.models import Count, Min, Sum, Avg, Max
 from django.core import serializers
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 import datetime
 # Agregar Ganancias y Gastos.
 class AgregarRegistro(CreateView):
@@ -31,17 +32,18 @@ class AgregarRegistro(CreateView):
 		registro.usuario = user
 		registro.save()
 		datos = Registro.objects.filter(usuario__id=id_user).order_by('-fecha')
+		
 		paginator = Paginator(datos, 10)
 		page = request.GET.get('page','1')
 		try:datos = paginator.page(page )
 		except PageNotAnInteger:
 		 	datos = paginator.page(1)
 		except EmptyPage:
-	 		datos = paginator.page(paginator.num_pages)
-
+			datos = paginator.page(paginator.num_pages)
 		data = serializers.serialize('json', datos,
-	 					fields=('fecha','ganancia','gasto','nota'))
+	 				fields=('fecha','ganancia','gasto','nota'))
 		return HttpResponse(data)
+	
 #Modificar Ganancias y Gastos
 class ModificarRegistro(CreateView):
 
@@ -143,6 +145,7 @@ class Reportes(ListView):
 	template_name = 'registro/reportes.html'
 
 	def get(self, request,*args, **kwargs):
+
 		# id_user = request.user.id
 		# datos = Registro.objects.filter(usuario__id=id_user).order_by('-fecha')
 		# paginator = Paginator(datos, 10)
@@ -157,3 +160,16 @@ class Reportes(ListView):
 	  	
 	 	# ctx = {'datos': datos, 'gasto': gasto}
 	 	return render_to_response('registro/reportes.html', context_instance=RequestContext(request))
+class VerReportes(TemplateView):
+
+	def get(self, request, *args, **kwargs):
+		id_user = request.user.id
+		fecha1 = request.GET['fecha1']
+		fecha2 = request.GET['fecha2']
+
+		#datos = Registro.objects.filter(Q(fecha=fecha1) & Q(fecha=fecha2),usuario__id=id_user)
+		datos = Registro.objects.filter(fecha__range=(fecha1, fecha2),usuario__id=id_user)
+		
+		data = serializers.serialize('json', datos,
+	 				fields=('ganancia','gasto'))
+		return HttpResponse(data)

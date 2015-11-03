@@ -52,6 +52,10 @@ class Menu(ListView):
 	def get(self, request, *args, **kwargs):
 		id_user = request.user.id
 		datos = Registro.objects.filter(usuario__id=id_user).order_by('-fecha')
+		cont = 0
+		for contador in datos:
+			cont = cont + 1
+		print cont
 		paginator = Paginator(datos, 10)
 		page = request.GET.get('page','1')
 		try:datos = paginator.page(page )
@@ -63,7 +67,7 @@ class Menu(ListView):
 		ganancia = Registro.objects.filter(usuario__id=id_user).aggregate(Sum('ganancia')).values()[0]
 		gasto = Registro.objects.filter(usuario__id=id_user).aggregate(Sum('gasto')).values()[0]
 		#print datos
-		ctx = {'datos': datos, 'ganancia':ganancia, 'gasto':gasto}
+		ctx = {'datos': datos, 'ganancia':ganancia, 'gasto':gasto, 'cont':cont}
 
 		return render_to_response('menu/menu.html',ctx, context_instance=RequestContext(request))
 

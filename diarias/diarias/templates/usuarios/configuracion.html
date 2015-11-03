@@ -16,6 +16,8 @@
 	<article id="perfil" class="col-md-10">
 		<ul class="nav nav-tabs nav-justified well">
   			<li role="presentation" class="active"><a href="/perfil">Perfil</a>
+  				{{user.perfiles.id }}
+  				{{user.id}}
 				{% if user.perfiles.id == user.id%}
 					<h3>Nombre de Usuario: </h3>
 					<p>{{user.username|capfirst}}</p>
@@ -30,17 +32,19 @@
 					{% else %}
 						<h3>Nombre de Usuario: </h3>
 						<p>{{user.username|capfirst}}</p>
-							
+						<h3>Email: </h3>
+						<p>{{user.email}}</p>
+						<h3>Nombre: </h3>
+						<p>{{user.first_name}}</p><p>{{user.last_name}}</p>
 				{% endif %}
   			</li>
   				{% if user.perfiles.id == user.id %}
   					<li role="presentation"><a href="actualizar-perfil/{{user.id}}/">Editar Perfil</a></li>
   					<li role="presentation"><a href="cambiar-clave/">Cambiar Contraseña</a></li>
-  					{% else %}
+  				{% else %}
   					<li role="presentation"><a href="#" class="btn disabled">Editar Perfil</a></li>
   					<li role="presentation"><a href="#" class="btn disabled">Cambiar Contraseña</a></li>
-  				{% endif %}
-  				
+  				{% endif %}  				
 		</ul>
 		<hr></hr>
 	</article>
