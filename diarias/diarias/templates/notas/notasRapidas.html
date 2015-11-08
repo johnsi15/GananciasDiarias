@@ -29,6 +29,7 @@
 
 {% block contenidomedio %}
 	
+
 {% endblock %}
 
 
@@ -107,7 +108,7 @@
 				</div>
 				<form method="POST" enctype="multipart/form-data" id="agregar_nota_form">{% csrf_token %}
 				    <div class="modal-body">
-				          <div class="form-group">
+				          <div id="errorForm" class="form-group">
 				            <label for="recipient-name" class="control-label">Titulo:</label>
 				            <input type="text" class="form-control" id="AgregarTitulo" name="titulo">
 				          </div>

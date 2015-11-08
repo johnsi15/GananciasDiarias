@@ -146,20 +146,9 @@ class Reportes(ListView):
 
 	def get(self, request,*args, **kwargs):
 
-		# id_user = request.user.id
-		# datos = Registro.objects.filter(usuario__id=id_user).order_by('-fecha')
-		# paginator = Paginator(datos, 10)
-		# page = request.GET.get('page','1')
-		# try:datos = paginator.page(page )
-		# except PageNotAnInteger:
-		#  	datos = paginator.page(1)
-		# except EmptyPage:
-	 # 		datos = paginator.page(paginator.num_pages)
-
-	 #  	gasto = Registro.objects.filter(usuario__id=id_user).aggregate(Sum('gasto')).values()[0]
-	  	
-	 	# ctx = {'datos': datos, 'gasto': gasto}
+		
 	 	return render_to_response('registro/reportes.html', context_instance=RequestContext(request))
+	 	
 class VerReportes(TemplateView):
 
 	def get(self, request, *args, **kwargs):

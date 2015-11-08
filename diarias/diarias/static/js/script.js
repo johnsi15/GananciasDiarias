@@ -47,10 +47,28 @@ $(document).ready(function(){
 	$('#ventana3').on('shown.bs.modal', function(){
 	   $('#fecha_gasto').focus();
 	})
+
+/*---------validadicones de errores------------------*/
+$("#AgregarTitulo").keyup(function(){
+        if( $(this).val() != "" ){
+            $(".text-danger").fadeOut();
+            $( "#errorForm" ).removeClass( "has-error" );
+            return false;
+        }
+});
 /*Guardar notas rapidas con ajax*/
-		$('#agregarNota').click(function(e){
-				e.preventDefault();
-				console.log('ok ready;');
+    $('#agregarNota').click(function(e){
+        e.preventDefault();
+        console.log('ok ready;');
+        if( $("#AgregarTitulo").val() == "" ){
+            $(".text-danger").remove();
+            $("#AgregarTitulo").focus().after("<p class='text-danger'>Ingrese un titulo por favor.</p>" );
+            $( "#errorForm" ).addClass( "has-error" );
+            return false;
+        }/*else{
+          $( "#errorForm" ).removeClass( "has-error" );
+          $(".text-danger").remove();
+        }*/
 				$.ajax({
               beforeSend: function(){
 
@@ -138,7 +156,7 @@ $(document).ready(function(){
                   $('#valorNumerico2').text(formatNumber.new(sumaGastos, "$"));
                   $('#totalActual').text(formatNumber.new(totalActual, "$"));
                   $('#agregar_gananciaygasto_form')[0].reset();//borramos los datos del form 
-                  console.log(contador);
+                  //console.log(contador);
                   for (var i = 0; i < datos.length; i++) {
                      /* console.log(datos[i].pk);*/
                      //console.log(datos[i].fields.fecha);
@@ -213,6 +231,7 @@ $(document).ready(function(){
                   /*$('#FechaGananciasGastos').empty();//limpiamos la tabla */
                   var html = "";
                   var datos = JSON.parse(data);
+                  var contador = $('#contador').text();
                     //console.log(datos);
                   gananciaParse = parseInt(ganancia);
                   gastoParse = parseInt(gasto);
@@ -245,21 +264,24 @@ $(document).ready(function(){
                    var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+
                    'X'+'</button>'+'<strong>'+'Ganancia'+'</strong>'+' La Ganancia se Guardo Correctamente.'+'</div>';
                    $('#mensajeExitoso').html(exito);//mensaje de exito
+                   contador++;
                    /*Volvemos a mandar el codigo de paginacion porque se desactiva cunado terminamos de hacerlo la primera vez*/
-                  var paginacion = '<nav class="pagination" style="display: none;">'+
-                                      '<span class="step-links">'+
-                                          '{% if datos.has_previous %}'+
-                                              '<a href="?page={{ datos.previous_page_number }}">previous</a>'+
-                                          '{% endif %}'+
-                                          '<span class="current">'+
-                                              'Page {{ datos.number }} of {{ datos.paginator.num_pages }}.'+
-                                          '</span>'+
-                                          '{% if datos.has_next %}'+
-                                              '<a id="siguiente" href="?page=2">next</a>'+
-                                          '{% endif %}datos'+
-                                      '</span>'+
-                                  '</nav>';
-                  $('#pag').html(paginacion);
+                   console.log(contador);
+                   if(contador>10){
+                       // console.log('poraca paso');
+                        var paginacion = '<nav class="pagination" style="display: none;">'+
+                                            '<span class="step-links"> {{ datos.next_page_number }}'+
+                                                '{% if datos.has_next %}'+
+                                                    '<a id="siguiente" href="?page=0">next</a>'+
+                                                '{% endif %}datos'+
+                                            '</span>'+
+                                        '</nav>';
+                        $('#pag').html(paginacion);
+                        $('#contador').text(contador);
+                    }else{
+                        $('#contador').text(contador);
+                        $('.pagination').remove();
+                    }
                 }
               },
               error: function(jqXHR,estado,error){
@@ -297,6 +319,7 @@ $(document).ready(function(){
                   /* $('#FechaGananciasGastos').empty();//limpiamos la tabla */
                   var html = "";
                   var datos = JSON.parse(data);
+                  var contador = $('#contador').text();
                     //console.log(datos);
                   gananciaParse = parseInt(ganancia);
                   gastoParse = parseInt(gasto);
@@ -329,21 +352,24 @@ $(document).ready(function(){
                    var exito = '<div class="alert alert-success">'+'<button type="button" class="close" data-dismiss="alert">'+
                    'X'+'</button>'+'<strong>'+'Gasto'+'</strong>'+' El Gasto se Guardo Correctamente.'+'</div>';
                   $('#mensajeExitoso').html(exito);//mensaje de exito
-                  /*Volvemos a mandar el codigo de paginacion porque se desactiva cunado terminamos de hacerlo la primera vez*/
-                  var paginacion = '<nav class="pagination" style="display: none;">'+
-                                      '<span class="step-links">'+
-                                          '{% if datos.has_previous %}'+
-                                              '<a href="?page={{ datos.previous_page_number }}">previous</a>'+
-                                          '{% endif %}'+
-                                          '<span class="current">'+
-                                              'Page {{ datos.number }} of {{ datos.paginator.num_pages }}.'+
-                                          '</span>'+
-                                          '{% if datos.has_next %}'+
-                                              '<a id="siguiente" href="?page=2">next</a>'+
-                                          '{% endif %}datos'+
-                                      '</span>'+
-                                  '</nav>';
-                  $('#pag').html(paginacion);
+                   contador++;
+                     /*Volvemos a mandar el codigo de paginacion porque se desactiva cunado terminamos de hacerlo la primera vez*/
+                   console.log(contador);
+                   if(contador>10){
+                       // console.log('poraca paso');
+                        var paginacion = '<nav class="pagination" style="display: none;">'+
+                                            '<span class="step-links"> {{ datos.next_page_number }}'+
+                                                '{% if datos.has_next %}'+
+                                                    '<a id="siguiente" href="?page=0">next</a>'+
+                                                '{% endif %}datos'+
+                                            '</span>'+
+                                        '</nav>';
+                        $('#pag').html(paginacion);
+                        $('#contador').text(contador);
+                    }else{
+                        $('#contador').text(contador);
+                        $('.pagination').remove();
+                    }
                 }
               },
               error: function(jqXHR,estado,error){

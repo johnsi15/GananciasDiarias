@@ -54,6 +54,26 @@
 
 {% block script %}
 	<script>
+	/*Formatear valores numericos para que se vean como pesos*/
+  var formatNumber = {
+       separador: ".", // separador para los miles
+       sepDecimal: ',', // separador para los decimales
+         formatear:function (num){
+         num +='';
+         var splitStr = num.split('.');
+         var splitLeft = splitStr[0];
+         
+         var regx = /(\d+)(\d{3})/;
+         while (regx.test(splitLeft)) {
+         splitLeft = splitLeft.replace(regx, '$1' + this.separador + '$2');
+         }
+         return this.simbol + splitLeft;
+         },
+       new:function(num, simbol){
+       this.simbol = simbol ||'';
+       return this.formatear(num);
+       }
+    }
 	/*$(document).on( "keyup", "#buscar", function() {*/
 		$("#reporte").on( "click","#buscandoReporte",function() {
 			var fecha1 = $('#fecha1').val();
@@ -76,11 +96,11 @@
                     	gastoAcumulado = gastoAcumulado + datos[i].fields.gasto;
                        
                      };
-					$('#valorNumerico').html('$'+gananciaAcumulada);
+					$('#valorNumerico').html(formatNumber.new(gananciaAcumulada, "$"));
                                 
-                  	$('#valorNumerico2').html('$'+gastoAcumulado);
+                  	$('#valorNumerico2').html(formatNumber.new(gastoAcumulado, "$"));
                   	var Total = gananciaAcumulada - gastoAcumulado;
-                  	$('#totalActual').html('$'+Total);
+                  	$('#totalActual').html(formatNumber.new(Total, "$"));
 				}
 			});
 		});
