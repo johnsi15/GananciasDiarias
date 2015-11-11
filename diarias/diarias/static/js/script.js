@@ -49,13 +49,16 @@ $(document).ready(function(){
 	})
 
 /*---------validadicones de errores------------------*/
-$("#AgregarTitulo").keyup(function(){
+$("#AgregarTitulo, #titulo").keyup(function(){
         if( $(this).val() != "" ){
             $(".text-danger").fadeOut();
             $( "#errorForm" ).removeClass( "has-error" );
+
+            $( "#errorForm3" ).removeClass( "has-error" );
             return false;
         }
 });
+
 /*Guardar notas rapidas con ajax*/
     $('#agregarNota').click(function(e){
         e.preventDefault();
@@ -65,10 +68,14 @@ $("#AgregarTitulo").keyup(function(){
             $("#AgregarTitulo").focus().after("<p class='text-danger'>Ingrese un titulo por favor.</p>" );
             $( "#errorForm" ).addClass( "has-error" );
             return false;
-        }/*else{
-          $( "#errorForm" ).removeClass( "has-error" );
-          $(".text-danger").remove();
-        }*/
+        }else{
+          if( $("#titulo").val() == "" ){
+            $(".text-danger").remove();
+            $("#titulo").focus().after("<p class='text-danger'>Ingrese un titulo por favor.</p>" );
+            $( "#errorForm3" ).addClass( "has-error" );
+            return false;
+        }
+        }
 				$.ajax({
               beforeSend: function(){
 
@@ -117,10 +124,34 @@ $("#AgregarTitulo").keyup(function(){
         });/*Cierre del ajax*/
 		});/*Cierre de la funtion click*/
 
+/*--------validaciones----------*/
+   $("#valorGanancia, #valorGasto").keyup(function (){
+            this.value = (this.value + '').replace(/[^0-9]/g, '');
+           if( $(this).val() != "" ){
+                    $(".text-danger").fadeOut();
+                    $( "#errorForm" ).removeClass( "has-error" );
+                    $( "#errorForm2" ).removeClass( "has-error" );
+                    return false;
+            }
+    });
+
     /*Agregar ganancia y gasto al mismo tiempo */
     $('#agregarGananciGasto').click(function(e){
         e.preventDefault();
         console.log('ok ready;');
+        if( $("#valorGanancia").val() == "" ){
+            /*$(".text-danger").remove();*/
+            $("#valorGanancia").focus().after("<p class='text-danger'>Ingrese un valor numérico por favor.</p>" );
+            $( "#errorForm" ).addClass( "has-error" );
+            return false;
+        }else{
+          if( $("#valorGasto").val() == "" ){
+              /*$(".text-danger").remove();*/
+              $("#valorGasto").focus().after("<p class='text-danger'>Ingrese un valor numérico por favor.</p>" );
+              $( "#errorForm2" ).addClass( "has-error" );
+              return false;
+          }
+        }
         $.ajax({
               beforeSend: function(){
 
@@ -206,11 +237,25 @@ $("#AgregarTitulo").keyup(function(){
               timeout: 10000//10 segundos.
         });/*Cierre del ajax*/
       });/*Cierre de la funtion click*/
-
+    $("#valorGanancia2, #valorGasto3").keyup(function (){
+            this.value = (this.value + '').replace(/[^0-9]/g, '');
+           if( $(this).val() != "" ){
+                    $(".text-danger").fadeOut();
+                    $( "#errorForm4" ).removeClass( "has-error" );
+                    $( "#errorForm5" ).removeClass( "has-error" );
+                    return false;
+            }
+    });
     /*Agregar solo ganancia*/
     $('#agregarGanancia').click(function(e){
         e.preventDefault();
         console.log('ok ready;');
+        if( $("#valorGanancia2").val() == "" ){
+            /*$(".text-danger").remove();*/
+            $("#valorGanancia2").focus().after("<p class='text-danger'>Ingrese un valor numérico por favor.</p>" );
+            $( "#errorForm4" ).addClass( "has-error" );
+            return false;
+        }
         $.ajax({
               beforeSend: function(){
 
@@ -299,6 +344,12 @@ $("#AgregarTitulo").keyup(function(){
     $('#agregarGasto').click(function(e){
         e.preventDefault();
         console.log('ok ready;');
+        if( $("#valorGasto3").val() == "" ){
+            /*$(".text-danger").remove();*/
+            $("#valorGasto3").focus().after("<p class='text-danger'>Ingrese un valor numérico por favor.</p>" );
+            $( "#errorForm5" ).addClass( "has-error" );
+            return false;
+        }
         $.ajax({
               beforeSend: function(){
 
