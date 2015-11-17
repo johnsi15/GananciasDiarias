@@ -14,9 +14,9 @@
 	<article class="col-md-10">
 		<ul class="nav nav-tabs nav-justified well">
   			<li role="presentation"><a href="/perfil">Perfil</a></li>
-  			<li role="presentation"><a href="/perfil/actualizar-perfil/{{user.id}}">Editar Perfil</a></li>
+  			<li role="presentation"><a href="/actualizar-perfil/{{user.perfiles.id}}/">Editar Perfil</a></li>
 			<li role="presentation" class="active"><a href="">Cambiar Contraseña</a>
-				{% if user.perfiles.id == user.id  %}
+				{% if user.perfiles.usuario %}
 					<form method="post" action="">{% csrf_token %}
 				        {{ form.as_p }}
 				        <button class="btn btn-success" type="submit">Actualizar contraseña</button>

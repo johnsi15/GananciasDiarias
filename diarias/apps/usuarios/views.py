@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView,FormView
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse  
 from django.shortcuts import render_to_response,get_object_or_404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse_lazy
@@ -8,30 +8,79 @@ from .forms import UserForm,EditarPerfil,EditarContrasenaForm
 from .models import Perfiles
 from apps.menu.views import Menu
 from django.contrib.auth.hashers import make_password
-#from django.contrib.auth.models import User
+from django.contrib.auth.models import User
+from django.contrib import auth  
+from django.core.context_processors import csrf  
+from django.core.mail import send_mail  
+import hashlib, datetime, random  
+from django.utils import timezone
 
 
-class NuevoUsuario(FormView):
-    template_name = 'usuarios/nuevoUsuario.html'
-    form_class = UserForm
-    #success_url = HttpResponseRedirect('/menu')
+def NuevoUsuario(request):  
+    args = {}
+    args.update(csrf(request))
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        args['form'] = form
+        if form.is_valid(): 
+            form.save()  
+            username = form.cleaned_data['username']
+            nombre = form.cleaned_data['nombre']
+            apellido = form.cleaned_data['apellido']
+            telefono = form.cleaned_data['telefono']
+            email = form.cleaned_data['correo']
+            salt = hashlib.sha1(str(random.random())).hexdigest()[:5]            
+            activation_key = hashlib.sha1(salt+email).hexdigest()            
+            key_expires = datetime.datetime.today() + datetime.timedelta(2)
 
-    def form_valid(self, form):
-        user = form.save()
-        perfil = Perfiles()
-        perfil.usuario = user
-        perfil.nombre = form.cleaned_data['nombre']
-        perfil.apellido = form.cleaned_data['apellido']
-        perfil.telefono = form.cleaned_data['telefono']
-        perfil.correo = form.cleaned_data['correo']
-        perfil.save()
-        # return super(NuevoUsuario, self).form_valid(form)
-        return HttpResponseRedirect('/')
+            #Obtener el nombre de usuario
+            user=User.objects.get(username=username)
+
+            # Crear el perfil del usuario                                                                                                                                 
+            new_profile = Perfiles(usuario=user, nombre= nombre, apellido= apellido, activation_key=activation_key, 
+                telefono=telefono, correo= email, date_key_expires=key_expires)
+            new_profile.save()
+
+            #enviamos correo 
+            email_subject = 'Confirma tu cuenta'
+            email_body = "Hola %s, gracias por registrarte para validar tu cuenta da click en el enlace, recuerda que si despues de dos dias no activas la cuenta el correo expide, http://127.0.0.1:8000/confirmar/%s" % (username, activation_key)
+
+            send_mail(email_subject, email_body, 'myemail@example.com',
+                [email], fail_silently=False)
+
+            return HttpResponseRedirect('/gracias/')
+    else:
+        args['form'] = UserForm()
+
+    return render_to_response('usuarios/nuevoUsuario.html', args, context_instance=RequestContext(request))
+
+def register_confirm(request, activation_key):  
+    #verificamos si esta logeado el user
+    if request.user.is_authenticated():
+        HttpResponseRedirect('/menu/')
+
+    #verificamos el token que sea valido
+    user_profile = get_object_or_404(Perfiles, activation_key=activation_key)
+
+    #verificamos si el token aun esta activo
+    if user_profile.date_key_expires < timezone.now():
+        return render_to_response('usuarios/confirm_expired.html', context_instance=RequestContext(request))
+    #si todo esta bien lo mandamos a la bienbenida
+    user = user_profile.usuario
+    user.is_active = True
+    user.save()
+    return render_to_response('usuarios/confirmar.html', context_instance=RequestContext(request))
+
+def Gracias(request):
+    if request.method == 'GET':
+        #ctx = {'email': social_user}
+        return render_to_response('usuarios/gracias.html', context_instance=RequestContext(request))
 
 @login_required()
 def Perfil(request):
     if request.method == 'GET':
-        #ctx = {'email': social_user}
+        
+        
         return render_to_response('usuarios/configuracion.html', context_instance=RequestContext(request))
    #template_name = 'usuarios/configuracion.html'
 

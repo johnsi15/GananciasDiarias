@@ -4,7 +4,12 @@
 }
 
 #error{
-  color: red;
+  color: #2E2E2E;
+  font-size: 13px;
+  font-weight: bold;
+  background-color: #F5A9A9;
+  padding: 2%;
+  border-radius: 4px;
 }
 
 #buscador{

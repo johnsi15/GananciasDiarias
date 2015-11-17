@@ -17,7 +17,7 @@
 		<ul class="nav nav-tabs nav-justified well">
   			<li role="presentation"> <a href="/perfil">Perfil</a></li>
   			<li role="presentation" class="active"><a href="">Editar Perfil</a>
-				{% if user.perfiles.id == user.id %}
+				{% if user.perfiles.usuario %}
 					<form class="form-horizontal" id="formulario" method="post" action="">{% csrf_token %}
 						{{formulario.as_p}}
 						<br>

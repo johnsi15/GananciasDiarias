@@ -74,7 +74,7 @@ $("#AgregarTitulo, #titulo").keyup(function(){
             $("#titulo").focus().after("<p class='text-danger'>Ingrese un titulo por favor.</p>" );
             $( "#errorForm3" ).addClass( "has-error" );
             return false;
-        }
+          }
         }
 				$.ajax({
               beforeSend: function(){
@@ -237,6 +237,8 @@ $("#AgregarTitulo, #titulo").keyup(function(){
               timeout: 10000//10 segundos.
         });/*Cierre del ajax*/
       });/*Cierre de la funtion click*/
+
+/*----------validaciones-------------*/
     $("#valorGanancia2, #valorGasto3").keyup(function (){
             this.value = (this.value + '').replace(/[^0-9]/g, '');
            if( $(this).val() != "" ){
@@ -246,10 +248,12 @@ $("#AgregarTitulo, #titulo").keyup(function(){
                     return false;
             }
     });
+
     /*Agregar solo ganancia*/
     $('#agregarGanancia').click(function(e){
         e.preventDefault();
         console.log('ok ready;');
+        /*-----validamos----*/
         if( $("#valorGanancia2").val() == "" ){
             /*$(".text-danger").remove();*/
             $("#valorGanancia2").focus().after("<p class='text-danger'>Ingrese un valor numérico por favor.</p>" );
@@ -344,6 +348,7 @@ $("#AgregarTitulo, #titulo").keyup(function(){
     $('#agregarGasto').click(function(e){
         e.preventDefault();
         console.log('ok ready;');
+        /*-----validamos----*/
         if( $("#valorGasto3").val() == "" ){
             /*$(".text-danger").remove();*/
             $("#valorGasto3").focus().after("<p class='text-danger'>Ingrese un valor numérico por favor.</p>" );
