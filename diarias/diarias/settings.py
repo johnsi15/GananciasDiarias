@@ -187,8 +187,8 @@ SOCIAL_AUTH_FACEBOOK_SECRET = 'c4e3805f07943ae9cc5d1e2f6581335d'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 EMAIL_HOST = 'smtp.gmail.com'  
-EMAIL_HOST_USER = 'gananciasygastos@gmail.com'  
-EMAIL_HOST_PASSWORD = 'Narutothelast'  
+EMAIL_HOST_USER = '@gmail.com'  
+EMAIL_HOST_PASSWORD = ''  
 EMAIL_PORT = 587  
 EMAIL_USE_TLS = True  
-DEFAULT_FROM_EMAIL = 'gananciasygastos@gmail.com'  
+DEFAULT_FROM_EMAIL = '@gmail.com'  
